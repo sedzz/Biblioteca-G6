@@ -4,9 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CapaDatos
+namespace Entidades
 {
-    public class GestorBiblioteca
+    internal class Autor
     {
+
+        private int Id {  get; set; }
+        private string Nombre { get; set; }
+
     }
 }
