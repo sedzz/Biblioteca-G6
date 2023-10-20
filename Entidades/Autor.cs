@@ -12,5 +12,14 @@ namespace Entidades
         private int Id {  get; set; }
         private string Nombre { get; set; }
 
+        public Autor()
+        {
+        }
+
+        public Autor(int id, string nombre)
+        {
+            Id = id;
+            Nombre = nombre;
+        }
     }
 }

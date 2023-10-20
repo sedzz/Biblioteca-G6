@@ -13,6 +13,17 @@ namespace Entidades
 
         private String Logo { get; set; }
 
-        
+        public Biblioteca()
+        {
+        }
+
+        public Biblioteca(string nombre, string lugar, string logo)
+        {
+            Nombre = nombre;
+            Lugar = lugar;
+            Logo = logo;
+        }
+
+
     }
 }

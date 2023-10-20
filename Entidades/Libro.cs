@@ -18,12 +18,26 @@ namespace Entidades
         private int UnidadesExistentes {  get; set; }
         private Boolean Disponibilidad {  get; set; }
 
+        public Libro()
+        {
+        }
+        public Libro(string isbn)
+        {
+            Isbn = isbn;
+        }
 
-
-
-
-
-
+        public Libro(string isbn, string titulo, string editorial, string autor, string sinopsis, string caratula, string categoria, int unidadesExistentes, bool disponibilidad)
+        {
+            Isbn = isbn;
+            Titulo = titulo;
+            Editorial = editorial;
+            Autor = autor;
+            Sinopsis = sinopsis;
+            Caratula = caratula;
+            Categoria = categoria;
+            UnidadesExistentes = unidadesExistentes;
+            Disponibilidad = disponibilidad;
+        }
 
 
 

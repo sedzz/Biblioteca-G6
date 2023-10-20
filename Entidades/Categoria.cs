@@ -11,8 +11,15 @@ namespace Entidades
         private int Id {  get; set; }
         private string Descripcion { get; set; }
 
+        public Categoria()
+        {
+        }
 
-
+        public Categoria(int id, string descripcion)
+        {
+            Id = id;
+            Descripcion = descripcion;
+        }
 
         public override bool Equals(object obj)
         {
