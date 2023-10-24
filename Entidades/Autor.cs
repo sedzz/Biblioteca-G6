@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Entidades
 {
-    internal class Autor
+    public class Autor
     {
 
-        private int Id {  get; set; }
-        private string Nombre { get; set; }
+        public int Id {  get; set; }
+        public string Nombre { get; set; }
 
         public Autor()
         {

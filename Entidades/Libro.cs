@@ -3,20 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Entidades;
 namespace Entidades
 {
     public class Libro : IEquatable<Libro>
     {
-        private string Isbn { get; set; }
-        private string Titulo { get; set; }
-        private string Editorial {  get; set; }
-        private string Autor {  get; set; }
-        private string Sinopsis {  get; set; }
-        private string Caratula {  get; set; }
-        private string Categoria {get; set;}
-        private int UnidadesExistentes {  get; set; }
-        private Boolean Disponibilidad {  get; set; }
+        public string Isbn { get; set; }
+        public string Titulo { get; set; }
+        public string Editorial { get; set; }
+        public List<Autor> Autores { get; set; }
+        public string Sinopsis { get; set; }
+        public string Caratula { get; set; }
+        public List<Categoria> Categorias { get; set; }
+        public int UnidadesExistentes { get; set; }
+        public string Disponibilidad { get; set; }
+        public List<Prestamo> Prestamos { get;set; }
 
         public Libro()
         {
@@ -26,17 +27,18 @@ namespace Entidades
             Isbn = isbn;
         }
 
-        public Libro(string isbn, string titulo, string editorial, string autor, string sinopsis, string caratula, string categoria, int unidadesExistentes, bool disponibilidad)
+        public Libro(string isbn, string titulo, string editorial, List<Autor> autores, string sinopsis, string caratula, List<Categoria> categorias, int unidadesExistentes, string disponibilidad, List<Prestamo> prestamos)
         {
             Isbn = isbn;
             Titulo = titulo;
             Editorial = editorial;
-            Autor = autor;
+            Autores = autores;
             Sinopsis = sinopsis;
             Caratula = caratula;
-            Categoria = categoria;
+            Categorias = categorias;
             UnidadesExistentes = unidadesExistentes;
             Disponibilidad = disponibilidad;
+            Prestamos = prestamos;
         }
 
 

@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Entidades
 {
-    internal class Categoria : IEquatable<Categoria>
+    public class Categoria : IEquatable<Categoria>
     {
-        private int Id {  get; set; }
-        private string Descripcion { get; set; }
+        public int Id {  get; set; }
+        public string Descripcion { get; set; }
 
         public Categoria()
         {

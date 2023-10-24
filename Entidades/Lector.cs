@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Entidades
 {
-    internal class Usuario
+    internal class Lector
     {
         private string NumCarnet {  get; set; }
         private string Nombre { get; set; }
@@ -14,11 +14,11 @@ namespace Entidades
         private string Telefono { get; set; }
         private string Gmail {  get; set; }
 
-        public Usuario()
+        public Lector()
         {
         }
 
-        public Usuario(string numCarnet, string nombre, string contraseña, string telefono, string gmail)
+        public Lector(string numCarnet, string nombre, string contraseña, string telefono, string gmail)
         {
             NumCarnet = numCarnet;
             Nombre = nombre;
