@@ -13,52 +13,38 @@ namespace CapaDatos
     {
         const string cadConexion = "Data Source = localhost; Initial Catalog = BibliotecaG6; Integrated Security = SSPI; MultipleActiveResultSets=true";  
         DatosBiblioteca biblioteca = new DatosBiblioteca("4V","San Jorge","./logo.png");
-        public void AñadirLibro(out string errores, string isbn, string titulo, string editorial, List<Autor> autores, string sinopsis, string caratula, List<Categoria> categorias, int unidadesExistentes, string disponibilidad, List<Prestamo> prestamos) {
+        public void AñadirLibro(string isbn, string titulo, string editorial, string sinopsis, string caratula, int unidadesExistentes, string disponibilidad, out string errores) {
             errores = "";
-           // Libro L = new Libro(isbn, titulo, editorial, autores, sinopsis, caratula, categorias, unidadesExistentes, disponibilidad, prestamos);
+            
+            Libro libro = new Libro(isbn,titulo,editorial,sinopsis,caratula,unidadesExistentes,disponibilidad);
+
 ;            using (SqlConnection conexion = new SqlConnection(cadConexion))
             {
                 try
                 {
                     conexion.Open();
-                    string sql = "SELECT * FROM Libro";
-                    SqlCommand cmdLibro = new SqlCommand(sql, conexion);
-                    SqlDataReader datos = cmdLibro.ExecuteReader();
 
-                    if (!datos.HasRows)
-                    {
-                        errores = "no hay libros existentes";
-                    }
+                    string sqlanyadirLibro = "INSERT INTO Libro (ISBN,Titulo,Editorial,Sinopsis,Caratula,Unidades,Disponibilidad) VALUES (@isbn,@editorial,@sinopsis,@caratula,@unidades,@disponibilidad)";
+                    SqlCommand cmdConsulta = new SqlCommand(sqlanyadirLibro, conexion);
 
-                    //while (datos.Read())
-                    //{
-                    //    String isbn = datos["ISBN"].ToString();
-                    //    String titulo = datos["Titulo"].ToString();
-                    //    String editorial = datos["Editorial"].ToString();
-                    //    Libro libro = new Libro();
-                    //    List<Autor> autores = new List<Autor>();
-                    //    foreach (Autor autor in libro.Autores)
-                    //    {
-                    //        autores.Add(autor);
-                    //    }
-                    //    String sinopsis = datos["Sinopsis"].ToString();
-                    //    String caratula = datos["Caratula"].ToString();
-                    //    List<Categoria> categorias = new List<Categoria>();
-                        
-                                            
-                       
-                    //    String unidades = datos["Unidades"].ToString();
-                    //    String disponibilidad = datos["Disponibilidad"].ToString();                       
-                    //}
+                    cmdConsulta.Parameters.AddWithValue("@isbn", isbn);
+                    cmdConsulta.Parameters.AddWithValue("@editorial", editorial);
+                    cmdConsulta.Parameters.AddWithValue("@sinopsis", sinopsis);
+                    cmdConsulta.Parameters.AddWithValue("@caratula", caratula);
+                    cmdConsulta.Parameters.AddWithValue("@unidades", unidadesExistentes);
+                    cmdConsulta.Parameters.AddWithValue("@disponibilidad", disponibilidad);
+
+                    int filasAfectadas = cmdConsulta.ExecuteNonQuery();
 
 
-
-
+                    string sqlanyadirLectorEscribe = "INSERT INTO Va_Sobre (ISBN_Libro, Id_Categoria) VALUES (@ISBN_Libro, @Id_Categoria)";
+                    cmdConsulta.Parameters.AddWithValue("@ISBN_Libro", isbn);
+                   /* cmdConsulta.Parameters.AddWithValue("@Id_Categoria", Id_Categoria);*/
 
                 }
                 catch (Exception)
                 {
-
+                    errores = "Error al agregar el libro";
                     throw;
                 }
             }
