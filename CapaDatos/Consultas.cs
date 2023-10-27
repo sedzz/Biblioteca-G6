@@ -182,42 +182,6 @@ namespace CapaDatos
                 }
             }
         }
-
-
-        //De lector@s, autor @s por trozo de nombre
-        public void BuscarLibroPorISBN(string isbn, out string errores)
-        {
-            errores = "";
-
-
-            using (SqlConnection conexion = new SqlConnection(cadConexion))
-            {
-                try
-                {
-                    conexion.Open();
-                    string sql = "SELECT * FROM Libro WHERE Libro.Isbn = @isbn";
-                    using (SqlCommand cmdLibro = new SqlCommand(sql, conexion))
-                    {
-                        cmdLibro.Parameters.AddWithValue("@isbn", isbn);
-                        using (SqlDataReader datos = cmdLibro.ExecuteReader())
-                        {
-                            if (!datos.HasRows)
-                            {
-                                errores = "No hay libro con ese ISBN.";
-                            }
-
-                        }
-                    }
-                }
-                catch (Exception)
-                {
-
-                    throw;
-                }
-            }
-
-        }
-
         public Categoria BuscarCategoriaPorId(int id, out string errores)
         {
             errores = "";
@@ -244,7 +208,41 @@ namespace CapaDatos
                     }
 
                 }
-                catch (Exception e)
+                catch (Exception)
+                {
+                    throw;
+                }
+            }
+            return null;
+
+        }
+        public Categoria BuscarCategoriaPorNombre(string nombre, out string errores)
+        {
+            errores = "";
+            using (SqlConnection conexion = new SqlConnection(cadConexion))
+            {
+                try
+                {
+                    conexion.Open();
+                    string sql = "SELECT * FROM Categoria WHERE Categoria.Descripcion = @nombre";
+                    SqlCommand cmdCategoriaNombre = new SqlCommand(sql, conexion);
+                    cmdCategoriaNombre.Parameters.AddWithValue("@Descripcion", nombre);
+
+                    SqlDataReader datos = cmdCategoriaNombre.ExecuteReader();
+
+                    if (!datos.HasRows)
+                    {
+                        errores = "No hay categoría con ese Descripcion.";
+                    }
+                    else
+                    {
+                        int id = (int)datos["ID"];
+                        Categoria cat = new Categoria(id, nombre);
+                        return cat;
+                    }
+
+                }
+                catch (Exception)
                 {
                     throw;
                 }
