@@ -55,6 +55,51 @@ namespace CapaDatos
             return null;
 
         }
+
+
+        public List<Categoria> TodasLasCategorias(out string errores)
+        {
+            errores = "";
+            List<Categoria> resultado = new List<Categoria>();
+            using (SqlConnection conexion = new SqlConnection(cadConexion))
+            {
+                try
+                {
+                    conexion.Open();
+                    string sql = "SELECT * FROM Categoria";
+                    SqlCommand cmdTodasCategorias = new SqlCommand(sql, conexion);
+
+                    SqlDataReader datos = cmdTodasCategorias.ExecuteReader();
+
+                    if (!datos.HasRows)
+                    {
+                        errores = "No se encontraron libros que coincidan con la porción del título proporcionada.";
+                    }
+                    else
+                    {
+                        while (datos.Read())
+                        {
+                            int id = (int)datos["id"];
+                            string descripcion = datos["Descripcion"].ToString();
+                            Categoria cat = new Categoria(id, descripcion);
+                            resultado.Add(cat);
+                        }
+                        return resultado;
+                    }
+                }
+                catch (Exception e)
+                {
+                    errores = "Ocurrió un error al buscar libros: " + e.Message;
+                }
+            }
+
+            return null;
+
+        }
+
+
+
+
         //De autor@, lector@ por identificador 
         public Autor BuscarAutorPorID(int id)
         {
@@ -182,41 +227,7 @@ namespace CapaDatos
                 }
             }
         }
-
-
-        //De lector@s, autor @s por trozo de nombre
-        public void BuscarLibroPorISBN(string isbn, out string errores)
-        {
-            errores = "";
-
-
-            using (SqlConnection conexion = new SqlConnection(cadConexion))
-            {
-                try
-                {
-                    conexion.Open();
-                    string sql = "SELECT * FROM Libro WHERE Libro.Isbn = @isbn";
-                    using (SqlCommand cmdLibro = new SqlCommand(sql, conexion))
-                    {
-                        cmdLibro.Parameters.AddWithValue("@isbn", isbn);
-                        using (SqlDataReader datos = cmdLibro.ExecuteReader())
-                        {
-                            if (!datos.HasRows)
-                            {
-                                errores = "No hay libro con ese ISBN.";
-                            }
-
-                        }
-                    }
-                }
-                catch (Exception)
-                {
-
-                    throw;
-                }
-            }
-
-        }
+        
 
         public Categoria BuscarCategoriaPorId(int id, out string errores)
         {
