@@ -8,13 +8,19 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Biblioteca
+
+namespace CapaPresentacion
 {
     public partial class Form1 : Form
     {
         public Form1()
         {
             InitializeComponent();
+        }
+
+        private void usuariosToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            FrmUsuarios frmUsuarios = new FrmUsuarios();
         }
     }
 }

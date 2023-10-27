@@ -11,13 +11,12 @@ namespace CapaDatos
 {
     public class GestorBiblioteca
     {
-        const string cadConexion = "Data Source = localhost; Initial Catalog = BIBLIOTECA; Integrated Security = SSPI; MultipleActiveResultSets=true";  
+        const string cadConexion = "Data Source = localhost; Initial Catalog = BibliotecaG6; Integrated Security = SSPI; MultipleActiveResultSets=true";  
         DatosBiblioteca biblioteca = new DatosBiblioteca("4V","San Jorge","./logo.png");
-        private void AñadirLibro(out string errores) {
+        public void AñadirLibro(out string errores, string isbn, string titulo, string editorial, List<Autor> autores, string sinopsis, string caratula, List<Categoria> categorias, int unidadesExistentes, string disponibilidad, List<Prestamo> prestamos) {
             errores = "";
-            
-
-            using (SqlConnection conexion = new SqlConnection(cadConexion))
+           // Libro L = new Libro(isbn, titulo, editorial, autores, sinopsis, caratula, categorias, unidadesExistentes, disponibilidad, prestamos);
+;            using (SqlConnection conexion = new SqlConnection(cadConexion))
             {
                 try
                 {
@@ -31,28 +30,26 @@ namespace CapaDatos
                         errores = "no hay libros existentes";
                     }
 
-                    while (datos.Read())
-                    {
-                        String isbn = datos["ISBN"].ToString();
-                        String titulo = datos["Titulo"].ToString();
-                        String editorial = datos["Editorial"].ToString();
-                        Libro libro = new Libro();
-                        List<Autor> autores = new List<Autor>();
-                        foreach (Autor autor in libro.Autores)
-                        {
-                            autores.Add(autor);
-                        }
-                        String sinopsis = datos["Sinopsis"].ToString();
-                        String caratula = datos["Caratula"].ToString(); 
+                    //while (datos.Read())
+                    //{
+                    //    String isbn = datos["ISBN"].ToString();
+                    //    String titulo = datos["Titulo"].ToString();
+                    //    String editorial = datos["Editorial"].ToString();
+                    //    Libro libro = new Libro();
+                    //    List<Autor> autores = new List<Autor>();
+                    //    foreach (Autor autor in libro.Autores)
+                    //    {
+                    //        autores.Add(autor);
+                    //    }
+                    //    String sinopsis = datos["Sinopsis"].ToString();
+                    //    String caratula = datos["Caratula"].ToString();
+                    //    List<Categoria> categorias = new List<Categoria>();
                         
-                        foreach (Categoria categoria in libro.Categorias)
-                        {
-                            libro.Categorias.Add(categoria);
-                        }
-                        String unidades = datos["Unidades"].ToString();
-                        String disponibilidad = datos["Disponibilidad"].ToString();                       
-                        biblioteca.Libros.Add(new Libro(isbn, titulo, editorial,autor,sinopsis, caratula, categorias, unidades,disponibilidad));
-                    }
+                                            
+                       
+                    //    String unidades = datos["Unidades"].ToString();
+                    //    String disponibilidad = datos["Disponibilidad"].ToString();                       
+                    //}
 
 
 
@@ -71,3 +68,4 @@ namespace CapaDatos
 
     }
 }
+

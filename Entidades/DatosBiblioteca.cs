@@ -13,8 +13,6 @@ namespace Entidades
 
         public String Logo { get; set; }
 
-        public List<Libro> Libros { get; set; }
-
 
         public DatosBiblioteca()
         {

@@ -41,14 +41,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Consultas.cs" />
     <Compile Include="GestorBiblioteca.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Biblioteca\CapaPresentacion.csproj">
-      <Project>{9731f0a2-7ab0-49e4-9283-c6c8bb0d3518}</Project>
-      <Name>CapaPresentacion</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Entidades\Entidades.csproj">
       <Project>{b5fc9938-2978-4e3d-bb44-f03f62efa19b}</Project>
       <Name>Entidades</Name>
