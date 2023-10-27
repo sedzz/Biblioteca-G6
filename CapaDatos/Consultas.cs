@@ -46,7 +46,7 @@ namespace CapaDatos
                         return resultado;
                     }
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
                     errores = "Ocurrió un error al buscar libros: " + e.Message;
                 }
