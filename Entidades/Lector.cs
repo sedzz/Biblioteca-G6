@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace Entidades
 {
-    internal class Lector
+    public class Lector
     {
-        private string NumCarnet {  get; set; }
-        private string Nombre { get; set; }
-        private string Contraseña { get; set; }
-        private string Telefono { get; set; }
-        private string Gmail {  get; set; }
+        public string NumCarnet {  get; set; }
+        public string Nombre { get; set; }
+        public string Contraseña { get; set; }
+        public string Telefono { get; set; }
+        public string Gmail {  get; set; }
 
         public Lector()
         {
