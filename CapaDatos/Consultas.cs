@@ -227,8 +227,6 @@ namespace CapaDatos
                 }
             }
         }
-        
-
         public Categoria BuscarCategoriaPorId(int id, out string errores)
         {
             errores = "";
@@ -255,7 +253,41 @@ namespace CapaDatos
                     }
 
                 }
-                catch (Exception e)
+                catch (Exception)
+                {
+                    throw;
+                }
+            }
+            return null;
+
+        }
+        public Categoria BuscarCategoriaPorNombre(string nombre, out string errores)
+        {
+            errores = "";
+            using (SqlConnection conexion = new SqlConnection(cadConexion))
+            {
+                try
+                {
+                    conexion.Open();
+                    string sql = "SELECT * FROM Categoria WHERE Categoria.Descripcion = @nombre";
+                    SqlCommand cmdCategoriaNombre = new SqlCommand(sql, conexion);
+                    cmdCategoriaNombre.Parameters.AddWithValue("@Descripcion", nombre);
+
+                    SqlDataReader datos = cmdCategoriaNombre.ExecuteReader();
+
+                    if (!datos.HasRows)
+                    {
+                        errores = "No hay categoría con ese Descripcion.";
+                    }
+                    else
+                    {
+                        int id = (int)datos["ID"];
+                        Categoria cat = new Categoria(id, nombre);
+                        return cat;
+                    }
+
+                }
+                catch (Exception)
                 {
                     throw;
                 }
