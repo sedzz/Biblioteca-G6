@@ -17,8 +17,11 @@ namespace Entidades
         public Lector()
         {
         }
-
-        public Lector(string numCarnet, string nombre, string contraseña, string telefono, string gmail)
+        public Lector(string numCarnet)
+        {
+            NumCarnet = numCarnet;
+        }
+            public Lector(string numCarnet, string nombre, string contraseña, string telefono, string gmail)
         {
             NumCarnet = numCarnet;
             Nombre = nombre;
