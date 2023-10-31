@@ -13,6 +13,7 @@ namespace CapaDatos
     {
         const string cadConexion = "Data Source = localhost; Initial Catalog = BibliotecaG6; Integrated Security = SSPI; MultipleActiveResultSets=true";  
         DatosBiblioteca biblioteca = new DatosBiblioteca("4V","San Jorge","./logo.png");
+
         public void AñadirLibro(string isbn, string titulo, string editorial, string sinopsis, string caratula, int unidadesExistentes, string disponibilidad, out string errores) {
             errores = "";
             
@@ -53,7 +54,34 @@ namespace CapaDatos
 
         }
 
+        public void Prestamo(DateTime fechaPrestamo, DateTime fechaDevolucion, String isbn, String numCarnet, out string errores)
+        {
+
+            errores = "";
+            try
+            {
+
+                using (SqlConnection conexion = new SqlConnection(cadConexion))
+                {
+                    conexion.Open();
+                    string sqlanyadirDevoluciones = "INSERT INTO Toma_Prestado (Fecha_Prestamo,Fecha_Devolucion,ISBN_Libro,NumCarnet) VALUES (@fechaPrestamo,@fechaDevolucion,@isbn,@numCarnet)";
+                    SqlCommand anyadirDevolucion = new SqlCommand(sqlanyadirDevoluciones, conexion);
+
+                    anyadirDevolucion.Parameters.AddWithValue("@fechaPrestamo", fechaPrestamo);
+                    anyadirDevolucion.Parameters.AddWithValue("@fechaDevolucion", fechaDevolucion);
+                    anyadirDevolucion.Parameters.AddWithValue("@isbn", isbn);
+
+                }
+            }
+            catch
+            {
+
+            }
+
+        }
+
 
     }
+
 }
 
