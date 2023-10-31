@@ -1,5 +1,6 @@
 ﻿using Entidades;
 using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 
 namespace CapaDatos
@@ -65,7 +66,6 @@ namespace CapaDatos
 
         }
 
-<<<<<<< HEAD
         public void Prestamo(DateTime fechaPrestamo, DateTime fechaDevolucion, String isbn, String numCarnet, out string errores)
         {
 
