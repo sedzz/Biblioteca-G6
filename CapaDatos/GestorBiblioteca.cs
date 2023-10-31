@@ -1,20 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Entidades;
+using System;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using Entidades;
 
 namespace CapaDatos
 {
     public class GestorBiblioteca
     {
-        const string cadConexion = "Data Source = localhost; Initial Catalog = BibliotecaG6; Integrated Security = SSPI; MultipleActiveResultSets=true";  
-        DatosBiblioteca biblioteca = new DatosBiblioteca("4V","San Jorge","./logo.png");
+<<<<<<< HEAD
+        const string cadConexion = "Data Source = localhost; Initial Catalog = BibliotecaG6; Integrated Security = SSPI; MultipleActiveResultSets=true";
+        DatosBiblioteca biblioteca = new DatosBiblioteca("4V", "San Jorge", "./logo.png");
 
-        public void AñadirLibro(string isbn, string titulo, string editorial, string sinopsis, string caratula, int unidadesExistentes, string disponibilidad, out string errores) {
+        public void AñadirLibro(string isbn, string titulo, string editorial, string sinopsis, string caratula, int unidadesExistentes, string disponibilidad, out string errores)
+        {
+=======
+        const string cadConexion = "Data Source = localhost; Initial Catalog = BibliotecaG6; Integrated Security = SSPI; MultipleActiveResultSets=true";
+        DatosBiblioteca biblioteca = new DatosBiblioteca("4V", "San Jorge", "./logo.png");
+        public void AñadirLibro(string isbn, string titulo, string editorial, string sinopsis, string caratula, int unidadesExistentes, string disponibilidad, out string errores)
+        {
+>>>>>>> 2ced3faf757506d9fd9b39e00a80a5a8bcfd8d61
             errores = "";
 
             Libro libro = new Libro(isbn, titulo, editorial, sinopsis, caratula, unidadesExistentes, disponibilidad);
@@ -54,6 +57,7 @@ namespace CapaDatos
 
         }
 
+<<<<<<< HEAD
         public void Prestamo(DateTime fechaPrestamo, DateTime fechaDevolucion, String isbn, String numCarnet, out string errores)
         {
 
@@ -80,10 +84,12 @@ namespace CapaDatos
 
         }
 
+=======
         public List<Lector> Morosos(out string errores)
         {
             errores = "";
             List<Lector> lista = new List<Lector>();
+>>>>>>> 2ced3faf757506d9fd9b39e00a80a5a8bcfd8d61
 
             using (SqlConnection conexion = new SqlConnection(cadConexion))
             {
@@ -91,32 +97,32 @@ namespace CapaDatos
                 {
                     conexion.Open();
                     string sql = "SELECT * FROM Toma_Prestado WHERE Toma_Prestado.Fecha_Devolucion < GETDATE()";//INNER JOIN TODO
-                    SqlCommand cmdMorosos = new SqlCommand(sql, conexion);
-                    SqlDataReader datos = cmdMorosos.ExecuteReader();
+    SqlCommand cmdMorosos = new SqlCommand(sql, conexion);
+    SqlDataReader datos = cmdMorosos.ExecuteReader();
 
                     if (!datos.HasRows)
                     {
                         errores = "No se encontraron lectores morosos.";
                     }
                     else
-                    {
-                        while (datos.Read())
-                        {
-                            string NumCarnet = datos["NumCarnet"].ToString();
+{
+    while (datos.Read())
+    {
+        string NumCarnet = datos["NumCarnet"].ToString();
 
-                         //   Lector lector = new Lector(NumCarnet,);
-                          //  lista.Add(lector);
-                        }
+        //   Lector lector = new Lector(NumCarnet,);
+        //  lista.Add(lector);
+    }
 
-                       
-                    }
+
+}
                         
                 }
                 catch (Exception exc)
                 {
-                    errores = "Error al agregar el libro";
-                }
-                return lista;
+    errores = "Error al agregar el libro";
+}
+return lista;
             }
         }
     }
