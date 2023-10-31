@@ -57,6 +57,7 @@ namespace CapaDatos
         }
 
 
+
         public List<Categoria> TodasLasCategorias(out string errores)
         {
             errores = "";
@@ -139,6 +140,92 @@ namespace CapaDatos
                     throw;
                 }
             }
+        }
+
+        public List<Autor> BuscarAutorPorPorcionNombre(string porcionNombre, out string errores)
+        {
+            errores = "";
+            List<Autor> resultado = new List<Autor>();
+            using (SqlConnection conexion = new SqlConnection(cadConexion))
+            {
+                try
+                {
+                    conexion.Open();
+                    string sql = "SELECT * FROM Autor WHERE Autor.Nombre LIKE @porcionNombre";
+                    SqlCommand cmdAutor = new SqlCommand(sql, conexion);
+                    cmdAutor.Parameters.AddWithValue("@porcionNombre", "%" + porcionNombre + "%");
+
+                    SqlDataReader datos = cmdAutor.ExecuteReader();
+
+                    if (!datos.HasRows)
+                    {
+                        errores = "No se encontraron autores que coincidan con la porción del nombre proporcionada.";
+                    }
+                    else
+                    {
+                        while (datos.Read())
+                        {
+                            int Id = (int)datos["Id"];
+                            string Nombre = datos["Nombre"].ToString();
+                            Autor autor = new Autor(Id, Nombre);
+                            resultado.Add(autor);
+                        }
+                        return resultado;
+                    }
+                }
+                catch (Exception e)
+                {
+                    errores = "Ocurrió un error al buscar autores: " + e.Message;
+                }
+            }
+
+            return null;
+
+        }
+        public List<Lector> BuscarLectorPorPorcionNombre(string porcionNombre, out string errores)
+        {
+            errores = "";
+            List<Lector> resultado = new List<Lector>();
+            using (SqlConnection conexion = new SqlConnection(cadConexion))
+            {
+                try
+                {
+                    conexion.Open();
+                    string sql = "SELECT * FROM Lector WHERE Lector.Nombre LIKE @porcionNombre";
+                    SqlCommand cmdLector = new SqlCommand(sql, conexion);
+                    cmdLector.Parameters.AddWithValue("@porcionNombre", "%" + porcionNombre + "%");
+
+                    SqlDataReader datos = cmdLector.ExecuteReader();
+
+                    if (!datos.HasRows)
+                    {
+                        errores = "No se encontraron lectores que coincidan con la porción del nombre proporcionada.";
+                    }
+                    else
+                    {
+                        while (datos.Read())
+                        {
+                            string NumCarnet = datos["NumCarnet"].ToString();
+                            string Nombre = datos["Nombre"].ToString();
+                            string Contraseña = datos["Contrasena"].ToString();
+                            string Telefono = datos["Telefono"].ToString();
+                            string Gmail = datos["Gmail"].ToString();
+
+                            Lector lector = new Lector(NumCarnet, Nombre,Contraseña,Telefono,Gmail);
+                            resultado.Add(lector);
+                        }
+
+                        return resultado;
+                    }
+                }
+                catch (Exception e)
+                {
+                    errores = "Ocurrió un error al buscar lectores: " + e.Message;
+                }
+            }
+
+            return null;
+
         }
         public Lector BuscarLectorPorID(string NumCarnet)
         {
