@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Biblioteca;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -20,7 +21,13 @@ namespace CapaPresentacion
 
         private void usuariosToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
-            FrmUsuarios frmUsuarios = new FrmUsuarios();
+            //FrmUsuarios frmUsuarios = new FrmUsuarios();
+        }
+
+        private void añadirLibroToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FrmAñadirLibro frmAñadirLibro = new FrmAñadirLibro();
+            frmAñadirLibro.ShowDialog();
         }
     }
 }

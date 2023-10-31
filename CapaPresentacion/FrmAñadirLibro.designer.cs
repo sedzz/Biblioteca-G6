@@ -48,6 +48,7 @@
             this.txtTitulo = new System.Windows.Forms.TextBox();
             this.lstBoxCategorias = new System.Windows.Forms.ListBox();
             this.label10 = new System.Windows.Forms.Label();
+            this.btnAñadirLibro = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // txtIsbn
@@ -210,11 +211,22 @@
             this.label10.TabIndex = 25;
             this.label10.Text = "Categorias";
             // 
+            // btnAñadirLibro
+            // 
+            this.btnAñadirLibro.Location = new System.Drawing.Point(429, 276);
+            this.btnAñadirLibro.Name = "btnAñadirLibro";
+            this.btnAñadirLibro.Size = new System.Drawing.Size(158, 52);
+            this.btnAñadirLibro.TabIndex = 26;
+            this.btnAñadirLibro.Text = "Añadir Libro";
+            this.btnAñadirLibro.UseVisualStyleBackColor = true;
+            this.btnAñadirLibro.Click += new System.EventHandler(this.button1_Click);
+            // 
             // FrmAñadirLibro
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnAñadirLibro);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.lstBoxCategorias);
             this.Controls.Add(this.txtTitulo);
@@ -263,5 +275,6 @@
         private System.Windows.Forms.TextBox txtTitulo;
         private System.Windows.Forms.ListBox lstBoxCategorias;
         private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Button btnAñadirLibro;
     }
 }
