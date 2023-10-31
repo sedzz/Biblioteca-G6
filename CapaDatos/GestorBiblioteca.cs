@@ -41,6 +41,8 @@ namespace CapaDatos
                     cmdConsulta.Parameters.AddWithValue("@ISBN_Libro", isbn);
                    /* cmdConsulta.Parameters.AddWithValue("@Id_Categoria", Id_Categoria);*/
 
+
+
                 }
                 catch (Exception)
                 {
