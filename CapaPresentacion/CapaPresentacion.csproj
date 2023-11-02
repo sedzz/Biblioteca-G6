@@ -58,6 +58,12 @@
     <Compile Include="FrmAñadirLibro.designer.cs">
       <DependentUpon>FrmAñadirLibro.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmConsultas.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmConsultas.Designer.cs">
+      <DependentUpon>frmConsultas.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmPrestamo.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -77,6 +83,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmAñadirLibro.resx">
       <DependentUpon>FrmAñadirLibro.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmConsultas.resx">
+      <DependentUpon>frmConsultas.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmPrestamo.resx">
       <DependentUpon>FrmPrestamo.cs</DependentUpon>
@@ -110,6 +119,10 @@
     <ProjectReference Include="..\CapaDatos\CapaDatos.csproj">
       <Project>{b8ef931d-26ec-43c6-8278-14bc970d122f}</Project>
       <Name>CapaDatos</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Entidades\Entidades.csproj">
+      <Project>{B5FC9938-2978-4E3D-BB44-F03F62EFA19B}</Project>
+      <Name>Entidades</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

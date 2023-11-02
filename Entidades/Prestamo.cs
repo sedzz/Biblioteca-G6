@@ -12,6 +12,7 @@ namespace Entidades
         public DateTime FechaPrestamo { get; set; }
         public DateTime FechaDevolucion { get; set; }
 
+        public Prestamo() { }
         public Prestamo(string NumCarnetLector, DateTime FechaPrestamo, DateTime FechaDevolucion)
         {
 

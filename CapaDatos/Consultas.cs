@@ -5,12 +5,12 @@ using System.Data.SqlClient;
 
 namespace CapaDatos
 {
-    public class Consultas
+     public static class Consultas
     {
         const string cadConexion = "Data Source = localhost; Initial Catalog = BibliotecaG6; Integrated Security = SSPI; MultipleActiveResultSets=true";
 
 
-        public List<Libro> BuscarLibroPorPorcionTitulo(string porcionTitulo, out string errores)
+         public static List<Libro> BuscarLibroPorPorcionTitulo(string porcionTitulo, out string errores)
         {
             errores = "";
             List<Libro> resultado = new List<Libro>();
@@ -58,7 +58,7 @@ namespace CapaDatos
 
 
 
-        public List<Categoria> TodasLasCategorias(out string errores)
+         public static List<Categoria> TodasLasCategorias(out string errores)
         {
             errores = "";
             List<Categoria> resultado = new List<Categoria>();
@@ -102,7 +102,7 @@ namespace CapaDatos
 
 
         //De autor@, lector@ por identificador 
-        public Autor BuscarAutorPorID(int id)
+         public static Autor BuscarAutorPorID(int id)
         {
             using (SqlConnection conexion = new SqlConnection(cadConexion))
             {
@@ -142,7 +142,7 @@ namespace CapaDatos
             }
         }
 
-        public List<Autor> BuscarAutorPorPorcionNombre(string porcionNombre, out string errores)
+         public static List<Autor> BuscarAutorPorPorcionNombre(string porcionNombre, out string errores)
         {
             errores = "";
             List<Autor> resultado = new List<Autor>();
@@ -182,7 +182,7 @@ namespace CapaDatos
             return null;
 
         }
-        public List<Lector> BuscarLectorPorPorcionNombre(string porcionNombre, out string errores)
+         public static List<Lector> BuscarLectorPorPorcionNombre(string porcionNombre, out string errores)
         {
             errores = "";
             List<Lector> resultado = new List<Lector>();
@@ -227,7 +227,7 @@ namespace CapaDatos
             return null;
 
         }
-        public Lector BuscarLectorPorID(string NumCarnet)
+         public static Lector BuscarLectorPorID(string NumCarnet)
         {
             using (SqlConnection conexion = new SqlConnection(cadConexion))
             {
@@ -270,7 +270,7 @@ namespace CapaDatos
             }
         }
 
-        public Libro BuscarLibroPorISBN(string isbn)
+         public static Libro BuscarLibroPorISBN(string isbn)
         {
             using (SqlConnection conexion = new SqlConnection(cadConexion))
             {
@@ -314,7 +314,7 @@ namespace CapaDatos
                 }
             }
         }
-        public Categoria BuscarCategoriaPorId(int id, out string errores)
+        public static Categoria BuscarCategoriaPorId(int id, out string errores)
         {
             errores = "";
             using (SqlConnection conexion = new SqlConnection(cadConexion))
@@ -348,7 +348,7 @@ namespace CapaDatos
             return null;
 
         }
-        public Categoria BuscarCategoriaPorNombre(string nombre, out string errores)
+         public static Categoria BuscarCategoriaPorNombre(string nombre, out string errores)
         {
             errores = "";
             using (SqlConnection conexion = new SqlConnection(cadConexion))

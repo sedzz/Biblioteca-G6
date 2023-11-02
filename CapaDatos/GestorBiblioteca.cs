@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Linq;
 
 namespace CapaDatos
 {
@@ -66,14 +67,29 @@ namespace CapaDatos
             }
         }
 
-        public void Prestamo(DateTime fechaPrestamo, DateTime fechaDevolucion, string isbn, string numCarnet, out string errores)
+        public string Prestamo(DateTime fechaPrestamo, DateTime fechaDevolucion, string isbn, string numCarnet, out string errores)
         {
             errores = "";
             try
             {
                 using (SqlConnection conexion = new SqlConnection(cadConexion))
                 {
+
                     conexion.Open();
+
+                    string sqlVerificarExistenciaLibro = "SELECT NumCarnet FROM Libro WHERE NumCarnet = @numCarnet";
+                    SqlCommand verificarExistenciaLibro = new SqlCommand(sqlVerificarExistenciaLibro, conexion);
+
+                    verificarExistenciaLibro.Parameters.AddWithValue("@numCarnet", isbn);
+
+                    var libroExistente = verificarExistenciaLibro.ExecuteScalar();
+
+                    if (libroExistente != null)
+                    {
+                        return "El libro seleccionado no existe";
+                    }
+
+
                     string sqlAnyadirDevoluciones = "INSERT INTO Toma_Prestado (Fecha_Prestamo, Fecha_Devolucion, ISBN_Libro, NumCarnet) " +
                         "VALUES (@fechaPrestamo, @fechaDevolucion, @isbn, @numCarnet)";
                     SqlCommand anyadirDevolucion = new SqlCommand(sqlAnyadirDevoluciones, conexion);
@@ -81,13 +97,28 @@ namespace CapaDatos
                     anyadirDevolucion.Parameters.AddWithValue("@fechaPrestamo", fechaPrestamo);
                     anyadirDevolucion.Parameters.AddWithValue("@fechaDevolucion", fechaDevolucion);
                     anyadirDevolucion.Parameters.AddWithValue("@isbn", isbn);
+                    anyadirDevolucion.Parameters.AddWithValue("numCarnet", numCarnet);
 
                     anyadirDevolucion.ExecuteNonQuery();
+
+                    string sqlPrestamosPorUsuario = "SELECT Count(Numcarnet) From Toma_Prestado WHERE Toma_Prestado.NumCarnet = @numCarnet";
+
+                    SqlCommand prestamoPorUsuario = new SqlCommand(sqlPrestamosPorUsuario, conexion);
+                    prestamoPorUsuario.Parameters.AddWithValue("@numCarnet", numCarnet);
+
+
+                    int cantidadPrestamos = (int)prestamoPorUsuario.ExecuteScalar();
+
+
+                    return "";
+
+
+
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                errores = "Error al registrar el préstamo";
+                errores = ex.ToString();
                 throw;
             }
         }
@@ -162,7 +193,7 @@ namespace CapaDatos
                 try
                 {
                     conexion.Open();
-                    string sql = "SELECT * FROM Toma_Prestado WHERE Toma_Prestado.Fecha_Devolucion < GETDATE()";
+                    string sql = "SELECT NumCarnetLector, FechaDevolucion FROM Toma_Prestado WHERE FechaDevolucion < GETDATE()";
                     SqlCommand cmdMorosos = new SqlCommand(sql, conexion);
                     SqlDataReader datos = cmdMorosos.ExecuteReader();
 
@@ -172,19 +203,36 @@ namespace CapaDatos
                     }
                     else
                     {
+                        List<Prestamo> prestamos = new List<Prestamo>();
+
                         while (datos.Read())
                         {
-                            string numCarnet = datos["NumCarnet"].ToString();
-                            // Aquí deberías crear objetos Lector y agregarlos a la lista.
+                            Prestamo prestamo = new Prestamo
+                            {
+                                NumCarnetLector = datos["NumCarnetLector"].ToString(),
+                                FechaDevolucion = Convert.ToDateTime(datos["FechaDevolucion"])
+                            };
+                            prestamos.Add(prestamo);
+                        }
+
+                        prestamos = prestamos.OrderBy(p => p.NumCarnetLector).ThenBy(p => p.FechaDevolucion).ToList();
+                        string currentCarnet = null;
+                        foreach (Prestamo prestamo in prestamos)
+                        {
+                            if (currentCarnet != prestamo.NumCarnetLector)
+                            {
+                                currentCarnet = prestamo.NumCarnetLector;
+                            }
                         }
                     }
                 }
                 catch (Exception exc)
                 {
-                    errores = "Error al buscar los lectores morosos";
+                    errores = "Error al buscar los lectores morosos: " + exc;
                 }
                 return lista;
             }
         }
+
     }
 }

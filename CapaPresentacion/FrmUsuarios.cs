@@ -36,5 +36,15 @@ namespace CapaPresentacion
             //}
             //dgvUsuarios.DataSource = usuarios;
         }
+
+        private void FrmUsuarios_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dgvUsuarios_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }

@@ -21,5 +21,10 @@ namespace Biblioteca
         {
             
         }
+
+        private void FrmAñadirLibro_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
