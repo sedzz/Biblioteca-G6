@@ -7,23 +7,27 @@ namespace CapaDatos
 {
     public class GestorBiblioteca
     {
-        const string cadConexion = "Data Source = localhost; Initial Catalog = BibliotecaG6; Integrated Security = SSPI; MultipleActiveResultSets=true";  
-        DatosBiblioteca biblioteca = new DatosBiblioteca("4V","San Jorge","./logo.png");
-        public void AñadirLibro(string isbn, string titulo, string editorial, string sinopsis, string caratula, int unidadesExistentes, string disponibilidad, List<Autor> autores, List<Categoria> categorias, out string errores) {
+        const string cadConexion = "Data Source=localhost; Initial Catalog=BibliotecaG6; Integrated Security=SSPI; MultipleActiveResultSets=true";
+        DatosBiblioteca biblioteca = new DatosBiblioteca("4V", "San Jorge", "./logo.png");
+
+        public void AñadirLibro(string isbn, string titulo, string editorial, string sinopsis, string caratula, int unidadesExistentes, string disponibilidad, List<Autor> autores, List<Categoria> categorias, out string errores)
+        {
             errores = "";
 
             Libro libro = new Libro(isbn, titulo, editorial, sinopsis, caratula, unidadesExistentes, disponibilidad);
 
-            ; using (SqlConnection conexion = new SqlConnection(cadConexion))
+            using (SqlConnection conexion = new SqlConnection(cadConexion))
             {
                 try
                 {
                     conexion.Open();
 
-                    string sqlAnyadirLibro = "INSERT INTO Libro (ISBN,Titulo,Editorial,Sinopsis,Caratula,Unidades,Disponibilidad) VALUES (@isbn,@editorial,@sinopsis,@caratula,@unidades,@disponibilidad)";
+                    string sqlAnyadirLibro = "INSERT INTO Libro (ISBN, Titulo, Editorial, Sinopsis, Caratula, Unidades, Disponibilidad) " +
+                        "VALUES (@isbn, @titulo, @editorial, @sinopsis, @caratula, @unidades, @disponibilidad)";
                     SqlCommand cmdInsertarLibro = new SqlCommand(sqlAnyadirLibro, conexion);
 
                     cmdInsertarLibro.Parameters.AddWithValue("@isbn", isbn);
+                    cmdInsertarLibro.Parameters.AddWithValue("@titulo", titulo);
                     cmdInsertarLibro.Parameters.AddWithValue("@editorial", editorial);
                     cmdInsertarLibro.Parameters.AddWithValue("@sinopsis", sinopsis);
                     cmdInsertarLibro.Parameters.AddWithValue("@caratula", caratula);
@@ -32,30 +36,27 @@ namespace CapaDatos
 
                     int filasAfectadas = cmdInsertarLibro.ExecuteNonQuery();
 
+                    string sqlAnyadirVaSobre = "INSERT INTO Va_Sobre (ISBN_Libro, Id_Categoria) VALUES (@isbn, @idCategoria)";
+                    SqlCommand cmdInsertarVaSobre = new SqlCommand(sqlAnyadirVaSobre, conexion);
 
-                    string sqlAnyadirVaSobre = "INSERT INTO Va_Sobre (ISBN_Libro, Id_Categoria) VALUES (@ISBN_Libro, @Id_Categoria)";
-
-
-                    for (int i = 0; i < categorias.Count; i++)
+                    foreach (var categoria in categorias)
                     {
-                        SqlCommand cmdInsertarVaSobre = new SqlCommand(sqlAnyadirVaSobre, conexion);
-                        cmdInsertarVaSobre.Parameters.AddWithValue("@ISBN_Libro", isbn);
-                        cmdInsertarVaSobre.Parameters.AddWithValue("Id_Categoria", categorias[i]);
+                        cmdInsertarVaSobre.Parameters.Clear();
+                        cmdInsertarVaSobre.Parameters.AddWithValue("@isbn", isbn);
+                        cmdInsertarVaSobre.Parameters.AddWithValue("@idCategoria", categoria.Id); // Asumo que Id es la propiedad correcta
                         cmdInsertarVaSobre.ExecuteNonQuery();
                     }
 
+                    string sqlAnyadirEscribe = "INSERT INTO Escribe (ISBN_Libro, Id_Autor) VALUES (@isbn, @idAutor)";
+                    SqlCommand cmdInsertarEscribe = new SqlCommand(sqlAnyadirEscribe, conexion);
 
-                    string sqlAnyadirEscribe = "INSERT INTO Escribe (ISBN_Libro, Id_Autor) VALUES (@ISBN_Libro, @Id_Autor)";
-
-
-                    for (int i = 0; i < autores.Count; i++)
+                    foreach (var autor in autores)
                     {
-                        SqlCommand cmdInsertarVaSobre = new SqlCommand(sqlAnyadirVaSobre, conexion);
-                        cmdInsertarVaSobre.Parameters.AddWithValue("@ISBN_Libro", isbn);
-                        cmdInsertarVaSobre.Parameters.AddWithValue("Id_Autor", autores[i]);
-                        cmdInsertarVaSobre.ExecuteNonQuery();
+                        cmdInsertarEscribe.Parameters.Clear();
+                        cmdInsertarEscribe.Parameters.AddWithValue("@isbn", isbn);
+                        cmdInsertarEscribe.Parameters.AddWithValue("@idAutor", autor.Id); // Asumo que Id es la propiedad correcta
+                        cmdInsertarEscribe.ExecuteNonQuery();
                     }
-             
                 }
                 catch (Exception)
                 {
@@ -63,35 +64,37 @@ namespace CapaDatos
                     throw;
                 }
             }
-
         }
 
-        public void Prestamo(DateTime fechaPrestamo, DateTime fechaDevolucion, String isbn, String numCarnet, out string errores)
+        public void Prestamo(DateTime fechaPrestamo, DateTime fechaDevolucion, string isbn, string numCarnet, out string errores)
         {
-
             errores = "";
             try
             {
-
                 using (SqlConnection conexion = new SqlConnection(cadConexion))
                 {
                     conexion.Open();
-                    string sqlanyadirDevoluciones = "INSERT INTO Toma_Prestado (Fecha_Prestamo,Fecha_Devolucion,ISBN_Libro,NumCarnet) VALUES (@fechaPrestamo,@fechaDevolucion,@isbn,@numCarnet)";
-                    SqlCommand anyadirDevolucion = new SqlCommand(sqlanyadirDevoluciones, conexion);
+                    string sqlAnyadirDevoluciones = "INSERT INTO Toma_Prestado (Fecha_Prestamo, Fecha_Devolucion, ISBN_Libro, NumCarnet) " +
+                        "VALUES (@fechaPrestamo, @fechaDevolucion, @isbn, @numCarnet)";
+                    SqlCommand anyadirDevolucion = new SqlCommand(sqlAnyadirDevoluciones, conexion);
 
                     anyadirDevolucion.Parameters.AddWithValue("@fechaPrestamo", fechaPrestamo);
                     anyadirDevolucion.Parameters.AddWithValue("@fechaDevolucion", fechaDevolucion);
                     anyadirDevolucion.Parameters.AddWithValue("@isbn", isbn);
 
+                    anyadirDevolucion.ExecuteNonQuery();
                 }
             }
-            
+            catch (Exception)
+            {
+                errores = "Error al registrar el préstamo";
+                throw;
+            }
         }
 
-
-        public void BorrarLibro(string Isbn_Libro, out string errores) 
+        public void BorrarLibro(string isbnLibro, out string errores)
         {
-            
+            errores = "";
             using (SqlConnection conexion = new SqlConnection(cadConexion))
             {
                 try
@@ -99,62 +102,47 @@ namespace CapaDatos
                     conexion.Open();
 
                     string sqlBuscarLibro = "SELECT * FROM Libro WHERE ISBN = @isbn";
-
                     SqlCommand cmdBuscarLibro = new SqlCommand(sqlBuscarLibro, conexion);
 
-                    cmdBuscarLibro.Parameters.AddWithValue("@isbn", Isbn_Libro);
-                    
+                    cmdBuscarLibro.Parameters.AddWithValue("@isbn", isbnLibro);
+
                     SqlDataReader libro = cmdBuscarLibro.ExecuteReader();
 
                     if (libro.Read())
                     {
-
-                        string sqlBuscarPrestamos = "SELECT * FROM Toma_prestado WHERE ISBN_Libro = @isbn";
-
+                        string sqlBuscarPrestamos = "SELECT * FROM Toma_Prestado WHERE ISBN_Libro = @isbn";
                         SqlCommand cmdBuscarPrestamos = new SqlCommand(sqlBuscarPrestamos, conexion);
 
-                        cmdBuscarPrestamos.Parameters.AddWithValue("@isbn", Isbn_Libro);
+                        cmdBuscarPrestamos.Parameters.AddWithValue("@isbn", isbnLibro);
 
                         SqlDataReader prestamos = cmdBuscarPrestamos.ExecuteReader();
 
                         if (prestamos.Read())
                         {
                             errores = "El libro tiene unidades prestadas. No se ha borrado de la biblioteca.";
-                        } else
+                        }
+                        else
                         {
-
-                            string sqlBorrarVaSobre = "DELETE FROM Va_Sobre WHERE Isbn_libro = @isbn";
-
+                            string sqlBorrarVaSobre = "DELETE FROM Va_Sobre WHERE ISBN_Libro = @isbn";
                             SqlCommand cmdBorrarVaSobre = new SqlCommand(sqlBorrarVaSobre, conexion);
-
-                            cmdBorrarVaSobre.Parameters.AddWithValue("@isbn", Isbn_Libro);
-
+                            cmdBorrarVaSobre.Parameters.AddWithValue("@isbn", isbnLibro);
                             cmdBorrarVaSobre.ExecuteNonQuery();
 
-                            string sqlBorrarEscribe = "DELETE FROM Escribe WHERE Isbn_libro = @isbn";
-
+                            string sqlBorrarEscribe = "DELETE FROM Escribe WHERE ISBN_Libro = @isbn";
                             SqlCommand cmdBorrarEscribe = new SqlCommand(sqlBorrarEscribe, conexion);
-
-                            cmdBorrarEscribe.Parameters.AddWithValue("@isbn", Isbn_Libro);
-
+                            cmdBorrarEscribe.Parameters.AddWithValue("@isbn", isbnLibro);
                             cmdBorrarEscribe.ExecuteNonQuery();
 
-                            string sqlBorrarLibro = "DELETE FROM Escribe WHERE Isbn_libro = @isbn";
-
-                            SqlCommand cmdBorrarLibro= new SqlCommand(sqlBorrarLibro, conexion);
-
-                            cmdBorrarLibro.Parameters.AddWithValue("@isbn", Isbn_Libro);
-
+                            string sqlBorrarLibro = "DELETE FROM Libro WHERE ISBN = @isbn";
+                            SqlCommand cmdBorrarLibro = new SqlCommand(sqlBorrarLibro, conexion);
+                            cmdBorrarLibro.Parameters.AddWithValue("@isbn", isbnLibro);
                             cmdBorrarLibro.ExecuteNonQuery();
-
-                            errores = "";
-
                         }
-
                     }
-
-                    errores = "No existe un libro con ese ISBN";
-
+                    else
+                    {
+                        errores = "No existe un libro con ese ISBN";
+                    }
                 }
                 catch (Exception)
                 {
@@ -162,55 +150,41 @@ namespace CapaDatos
                     throw;
                 }
             }
-            catch
-            {
-
-            }
-
         }
 
-=======
         public List<Lector> Morosos(out string errores)
         {
             errores = "";
             List<Lector> lista = new List<Lector>();
->>>>>>> 2ced3faf757506d9fd9b39e00a80a5a8bcfd8d61
 
             using (SqlConnection conexion = new SqlConnection(cadConexion))
             {
                 try
                 {
                     conexion.Open();
-                    string sql = "SELECT * FROM Toma_Prestado WHERE Toma_Prestado.Fecha_Devolucion < GETDATE()";//INNER JOIN TODO
-    SqlCommand cmdMorosos = new SqlCommand(sql, conexion);
-    SqlDataReader datos = cmdMorosos.ExecuteReader();
+                    string sql = "SELECT * FROM Toma_Prestado WHERE Toma_Prestado.Fecha_Devolucion < GETDATE()";
+                    SqlCommand cmdMorosos = new SqlCommand(sql, conexion);
+                    SqlDataReader datos = cmdMorosos.ExecuteReader();
 
                     if (!datos.HasRows)
                     {
                         errores = "No se encontraron lectores morosos.";
                     }
                     else
-{
-    while (datos.Read())
-    {
-        string NumCarnet = datos["NumCarnet"].ToString();
-
-        //   Lector lector = new Lector(NumCarnet,);
-        //  lista.Add(lector);
-    }
-
-
-}
-                        
+                    {
+                        while (datos.Read())
+                        {
+                            string numCarnet = datos["NumCarnet"].ToString();
+                            // Aquí deberías crear objetos Lector y agregarlos a la lista.
+                        }
+                    }
                 }
                 catch (Exception exc)
                 {
-    errores = "Error al agregar el libro";
-}
-return lista;
+                    errores = "Error al buscar los lectores morosos";
+                }
+                return lista;
             }
         }
     }
-
 }
-
