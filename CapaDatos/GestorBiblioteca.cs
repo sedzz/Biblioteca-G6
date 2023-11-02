@@ -58,9 +58,9 @@ namespace CapaDatos
                         cmdInsertarEscribe.ExecuteNonQuery();
                     }
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    errores = "Error al agregar el libro";
+                    errores = "Error al agregar el libro: " + e;
                     throw;
                 }
             }
