@@ -14,9 +14,10 @@ namespace CapaPresentacion
 {
     public partial class frmLibros : Form
     {
+        GestorBiblioteca gestion = new GestorBiblioteca();
         public frmLibros()
         {
-            
+            InitializeComponent();
         }
 
         private void frmLibros_Load(object sender, EventArgs e)
