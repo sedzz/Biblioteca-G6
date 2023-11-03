@@ -38,5 +38,10 @@ namespace CapaPresentacion
             dgvLibros.DataSource = libros;
 
         }
+
+        private void btnAutores_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

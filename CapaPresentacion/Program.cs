@@ -16,14 +16,13 @@ namespace CapaPresentacion
 
         public static GestorBiblioteca gestion;
 
-        [STAThread]
 
         static void Main()
         {
             gestion = new GestorBiblioteca();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new frmConsultas());
+            Application.Run(new frmLibros());
         }
     }
 }

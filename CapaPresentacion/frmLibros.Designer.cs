@@ -121,6 +121,7 @@
             this.btnAutores.TabIndex = 9;
             this.btnAutores.Text = "Autores";
             this.btnAutores.UseVisualStyleBackColor = true;
+            this.btnAutores.Click += new System.EventHandler(this.btnAutores_Click);
             // 
             // frmLibros
             // 
@@ -136,7 +137,7 @@
             this.Controls.Add(this.btnEliminar);
             this.Controls.Add(this.btnVolver);
             this.Name = "frmLibros";
-            this.Text = "Form2";
+            this.Text = "º";
             this.Load += new System.EventHandler(this.frmLibros_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvLibros)).EndInit();
             this.ResumeLayout(false);
