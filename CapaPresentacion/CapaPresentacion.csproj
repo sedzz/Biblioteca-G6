@@ -55,6 +55,12 @@
     <Compile Include="AutoresLibro.Designer.cs">
       <DependentUpon>AutoresLibro.cs</DependentUpon>
     </Compile>
+    <Compile Include="Devoluvion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Devoluvion.designer.cs">
+      <DependentUpon>Devoluvion.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

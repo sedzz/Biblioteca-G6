@@ -67,53 +67,63 @@ namespace CapaDatos
             }
         }
 
-        public string Prestamo(DateTime fechaPrestamo, DateTime fechaDevolucion, string isbn, string numCarnet, out string errores)
+        public void Prestamo(DateTime fechaPrestamo, DateTime fechaDevolucion, string isbn, string numCarnet, out string errores)
         {
             errores = "";
             try
             {
                 using (SqlConnection conexion = new SqlConnection(cadConexion))
                 {
-
                     conexion.Open();
 
-                    string sqlVerificarExistenciaLibro = "SELECT NumCarnet FROM Libro WHERE NumCarnet = @numCarnet";
+                    string sqlVerificarExistenciaLibro = "SELECT ISBN FROM Libro WHERE ISBN = @isbn";
                     SqlCommand verificarExistenciaLibro = new SqlCommand(sqlVerificarExistenciaLibro, conexion);
-
-                    verificarExistenciaLibro.Parameters.AddWithValue("@numCarnet", isbn);
-
+                    verificarExistenciaLibro.Parameters.AddWithValue("@isbn", isbn);
                     var libroExistente = verificarExistenciaLibro.ExecuteScalar();
 
-                    if (libroExistente != null)
+                    if (libroExistente == null)
                     {
-                        return "El libro seleccionado no existe";
+                        errores = "El libro seleccionado no existe";
                     }
+                    else
+                    {
+                        string sqlVerificarDisponibilidad = "SELECT Disponibilidad FROM Libro WHERE ISBN = @isbn";
+                        SqlCommand verificarDisponibilidadCmd = new SqlCommand(sqlVerificarDisponibilidad, conexion);
+                        verificarDisponibilidadCmd.Parameters.AddWithValue("@isbn", isbn);
+                        string disponibilidad = (string)verificarDisponibilidadCmd.ExecuteScalar();
 
+                        if (disponibilidad != "Prestable")
+                        {
+                            errores = "El libro no está disponible para préstamo";
+                        }
+                        else
+                        {
 
-                    string sqlAnyadirDevoluciones = "INSERT INTO Toma_Prestado (Fecha_Prestamo, Fecha_Devolucion, ISBN_Libro, NumCarnet) " +
-                        "VALUES (@fechaPrestamo, @fechaDevolucion, @isbn, @numCarnet)";
-                    SqlCommand anyadirDevolucion = new SqlCommand(sqlAnyadirDevoluciones, conexion);
+                            string sqlVerificarMorosidad = "SELECT COUNT(*) FROM Toma_Prestado " +
+                                "WHERE NumCarnet = @numCarnet AND Fecha_Devolucion < @fechaActual";
+                            SqlCommand verificarMorosidadCmd = new SqlCommand(sqlVerificarMorosidad, conexion);
+                            verificarMorosidadCmd.Parameters.AddWithValue("@numCarnet", numCarnet);
+                            verificarMorosidadCmd.Parameters.AddWithValue("@fechaActual", DateTime.Now);
+                            int prestamosMorosos = (int)verificarMorosidadCmd.ExecuteScalar();
 
-                    anyadirDevolucion.Parameters.AddWithValue("@fechaPrestamo", fechaPrestamo);
-                    anyadirDevolucion.Parameters.AddWithValue("@fechaDevolucion", fechaDevolucion);
-                    anyadirDevolucion.Parameters.AddWithValue("@isbn", isbn);
-                    anyadirDevolucion.Parameters.AddWithValue("numCarnet", numCarnet);
+                            if (prestamosMorosos > 0)
+                            {
+                                errores = "El usuario tiene préstamos morosos. No se permite el préstamo actual.";
+                            }
+                            else
+                            {
 
-                    anyadirDevolucion.ExecuteNonQuery();
-
-                    string sqlPrestamosPorUsuario = "SELECT Count(Numcarnet) From Toma_Prestado WHERE Toma_Prestado.NumCarnet = @numCarnet";
-
-                    SqlCommand prestamoPorUsuario = new SqlCommand(sqlPrestamosPorUsuario, conexion);
-                    prestamoPorUsuario.Parameters.AddWithValue("@numCarnet", numCarnet);
-
-
-                    int cantidadPrestamos = (int)prestamoPorUsuario.ExecuteScalar();
-
-
-                    return "";
-
-
-
+                                string sqlAnyadirDevoluciones = "INSERT INTO Toma_Prestado (Fecha_Prestamo, Fecha_Devolucion, ISBN_Libro, NumCarnet) " +
+                                    "VALUES (@fechaPrestamo, @fechaDevolucion, @isbn, @numCarnet)";
+                                SqlCommand anyadirDevolucion = new SqlCommand(sqlAnyadirDevoluciones, conexion);
+                                anyadirDevolucion.Parameters.AddWithValue("@fechaPrestamo", fechaPrestamo);
+                                anyadirDevolucion.Parameters.AddWithValue("@fechaDevolucion", fechaDevolucion);
+                                anyadirDevolucion.Parameters.AddWithValue("@isbn", isbn);
+                                anyadirDevolucion.Parameters.AddWithValue("@numCarnet", numCarnet);
+                                anyadirDevolucion.ExecuteNonQuery();
+                            }
+                        }
+                    }
                 }
             }
             catch (Exception ex)
