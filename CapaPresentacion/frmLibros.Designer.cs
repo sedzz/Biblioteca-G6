@@ -37,6 +37,7 @@
             this.dgvLibros = new System.Windows.Forms.DataGridView();
             this.btnCategorias = new System.Windows.Forms.Button();
             this.btnAutores = new System.Windows.Forms.Button();
+            this.btnMostrarTodos = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLibros)).BeginInit();
             this.SuspendLayout();
             // 
@@ -48,7 +49,6 @@
             this.btnVolver.TabIndex = 1;
             this.btnVolver.Text = "Volver";
             this.btnVolver.UseVisualStyleBackColor = true;
-            this.btnVolver.Click += new System.EventHandler(this.btnVolver_Click);
             // 
             // btnEliminar
             // 
@@ -58,6 +58,7 @@
             this.btnEliminar.TabIndex = 2;
             this.btnEliminar.Text = "Eliminar";
             this.btnEliminar.UseVisualStyleBackColor = true;
+            this.btnEliminar.Click += new System.EventHandler(this.btnEliminar_Click);
             // 
             // btnPrestamos
             // 
@@ -122,12 +123,22 @@
             this.btnAutores.TabIndex = 9;
             this.btnAutores.Text = "Autores";
             this.btnAutores.UseVisualStyleBackColor = true;
-            this.btnAutores.Click += new System.EventHandler(this.btnAutores_Click);
+            // 
+            // btnMostrarTodos
+            // 
+            this.btnMostrarTodos.Location = new System.Drawing.Point(1008, 12);
+            this.btnMostrarTodos.Name = "btnMostrarTodos";
+            this.btnMostrarTodos.Size = new System.Drawing.Size(75, 44);
+            this.btnMostrarTodos.TabIndex = 10;
+            this.btnMostrarTodos.Text = "Mostrar Todos";
+            this.btnMostrarTodos.UseVisualStyleBackColor = true;
+            this.btnMostrarTodos.Click += new System.EventHandler(this.btnMostrarTodos_Click);
             // 
             // frmLibros
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(1105, 629);
+            this.Controls.Add(this.btnMostrarTodos);
             this.Controls.Add(this.btnAutores);
             this.Controls.Add(this.btnCategorias);
             this.Controls.Add(this.dgvLibros);
@@ -156,5 +167,6 @@
         private System.Windows.Forms.DataGridView dgvLibros;
         private System.Windows.Forms.Button btnCategorias;
         private System.Windows.Forms.Button btnAutores;
+        private System.Windows.Forms.Button btnMostrarTodos;
     }
 }
