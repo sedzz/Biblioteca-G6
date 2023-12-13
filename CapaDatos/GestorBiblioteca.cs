@@ -11,17 +11,69 @@ namespace CapaDatos
         const string cadConexion = "Data Source=localhost; Initial Catalog=BibliotecaG6; Integrated Security=SSPI; MultipleActiveResultSets=true";
         DatosBiblioteca biblioteca = new DatosBiblioteca("4V", "San Jorge", "./logo.png");
 
+
+        /// <summary>
+        /// Método que recibe los datos de un nuevo libro para añadirlo a la base de datos.
+        /// Comprueba que hayan autores y categorías asociados al libro, y que existan en la base de datos, devolviendo un mensaje de error si no es así. Comprueba que los datos recibidos no estén vacíos.
+        /// </summary>
+        /// <param name="isbn"></param>
+        /// <param name="titulo"></param>
+        /// <param name="editorial"></param>
+        /// <param name="sinopsis"></param>
+        /// <param name="caratula"></param>
+        /// <param name="unidadesExistentes"></param>
+        /// <param name="disponibilidad"></param>
+        /// <param name="autores"></param>
+        /// <param name="categorias"></param>
+        /// <param name="errores"></param>
         public void AñadirLibro(string isbn, string titulo, string editorial, string sinopsis, string caratula, int unidadesExistentes, string disponibilidad, List<Autor> autores, List<Categoria> categorias, out string errores)
         {
             errores = "";
 
-            Libro libro = new Libro(isbn, titulo, editorial, sinopsis, caratula, unidadesExistentes, disponibilidad);
+
+            //Comprobamos que el libro tenga autores y categorías asociados.
+            if (autores.Count == 0 || categorias.Count == 0)
+            {
+                errores = "No se puede añadir un libro sin autores o sin categorías";
+                return;
+            }
+            //Comprobamos que no queden campos vacíos.
+            if (String.IsNullOrWhiteSpace(isbn) || String.IsNullOrWhiteSpace(titulo) || String.IsNullOrWhiteSpace(editorial) || String.IsNullOrWhiteSpace(sinopsis) || String.IsNullOrWhiteSpace(caratula) || String.IsNullOrWhiteSpace(disponibilidad))
+            {
+                errores = "No se pueden dejar campos vacíos";
+                return;
+            }
+            //Comprueba que haya un número de unidades positivo.
+            if (unidadesExistentes <= 0)
+            {
+                errores = "El número de unidades existentes debe ser mayor que 0";
+                return;
+            }
 
             using (SqlConnection conexion = new SqlConnection(cadConexion))
             {
                 try
                 {
                     conexion.Open();
+               
+                    //Comprueba que los autores y categorías existan en la base de datos, utilizando 2 métodos auxiliares.
+                    bool autoresCategoriasExistentes = true;
+                    foreach (var categoria in categorias)
+                    {
+                        autoresCategoriasExistentes = comprobarExistenciaCategoria(categoria.Id, out errores);
+                    }
+                    foreach (var autor in autores)
+                    {
+                        autoresCategoriasExistentes = comprobarExistenciaAutor(autor.Id, out errores);
+                    }
+                    //Sale de la función sin añadir el libro, si hay autores o categorías inexistentes en la base de datos.
+                    if (!autoresCategoriasExistentes)
+                    {
+                        errores = "Hay autores o categorías que no existen en la base de datos. Añade primero los autores o libros.";
+                        return;
+                    }
+
+
 
                     string sqlAnyadirLibro = "INSERT INTO Libro (ISBN, Titulo, Editorial, Sinopsis, Caratula, Unidades, Disponibilidad) " +
                         "VALUES (@isbn, @titulo, @editorial, @sinopsis, @caratula, @unidades, @disponibilidad)";
@@ -40,11 +92,12 @@ namespace CapaDatos
                     string sqlAnyadirVaSobre = "INSERT INTO Va_Sobre (ISBN_Libro, Id_Categoria) VALUES (@isbn, @idCategoria)";
                     SqlCommand cmdInsertarVaSobre = new SqlCommand(sqlAnyadirVaSobre, conexion);
 
+
                     foreach (var categoria in categorias)
                     {
                         cmdInsertarVaSobre.Parameters.Clear();
                         cmdInsertarVaSobre.Parameters.AddWithValue("@isbn", isbn);
-                        cmdInsertarVaSobre.Parameters.AddWithValue("@idCategoria", categoria.Id); // Asumo que Id es la propiedad correcta
+                        cmdInsertarVaSobre.Parameters.AddWithValue("@idCategoria", categoria.Id);
                         cmdInsertarVaSobre.ExecuteNonQuery();
                     }
 
@@ -55,7 +108,7 @@ namespace CapaDatos
                     {
                         cmdInsertarEscribe.Parameters.Clear();
                         cmdInsertarEscribe.Parameters.AddWithValue("@isbn", isbn);
-                        cmdInsertarEscribe.Parameters.AddWithValue("@idAutor", autor.Id); // Asumo que Id es la propiedad correcta
+                        cmdInsertarEscribe.Parameters.AddWithValue("@idAutor", autor.Id);
                         cmdInsertarEscribe.ExecuteNonQuery();
                     }
                 }
@@ -66,6 +119,86 @@ namespace CapaDatos
                 }
             }
         }
+
+
+
+        /// <summary>
+        /// Este método comprueba contra la base de datos que exista una categoría con el ID recibido.
+        /// </summary>
+        /// <param name="idCategoria"></param>
+        /// <param name="errores"></param>
+        /// <returns></returns>
+        private bool comprobarExistenciaCategoria(int idCategoria, out String errores)
+        {
+            using (SqlConnection conexion = new SqlConnection(cadConexion))
+            {
+                try
+                {
+                    conexion.Open();
+                    string sqlVerificarExistenciaCategoria = "SELECT ID FROM Categoria WHERE ID = @idCategoria";
+                    SqlCommand verificarExistenciaCategoria = new SqlCommand(sqlVerificarExistenciaCategoria, conexion);
+                    verificarExistenciaCategoria.Parameters.AddWithValue("@idCategoria", idCategoria);
+                    var categoriaExistente = verificarExistenciaCategoria.ExecuteScalar();
+
+                    if (categoriaExistente == null)
+                    {
+                        errores = "La categoría seleccionada no existe";
+                        return false;
+                    }
+                    else
+                    {
+                        errores = "";
+                        return true;
+                    }
+                }
+                catch (Exception e)
+                {
+                    errores = "Error al conectar con la base de datos" + e;
+                    return false;
+                }
+            }
+        }
+
+
+
+        /// <summary>
+        /// Este método comprueba que exista un autor con el ID recibido, contra la base de datos.
+        /// </summary>
+        /// <param name="idAutor"></param>
+        /// <param name="errores"></param>
+        /// <returns></returns>
+        private bool comprobarExistenciaAutor(int idAutor, out String errores)
+        {
+            using (SqlConnection conexion = new SqlConnection(cadConexion))
+            {
+                try
+                {
+                    conexion.Open();
+                    string sqlVerificarExistenciaAutor = "SELECT ID FROM Autor WHERE ID = @idAutor";
+                    SqlCommand verificarExistenciaAutor = new SqlCommand(sqlVerificarExistenciaAutor, conexion);
+                    verificarExistenciaAutor.Parameters.AddWithValue("@idAutor", idAutor);
+                    var autorExistente = verificarExistenciaAutor.ExecuteScalar();
+
+                    if (autorExistente == null)
+                    {
+                        errores = "El autor buscado no existe";
+                        return false;
+                    }
+                    else
+                    {
+                        errores = "";
+                        return true;
+                    }
+                }
+                catch (Exception e)
+                {
+                    errores = "Error al conectar con la base de datos" + e;
+                    return false;
+                }
+            }
+        }
+
+
 
         public void Prestamo(DateTime fechaPrestamo, DateTime fechaDevolucion, string isbn, string numCarnet, out string errores)
         {

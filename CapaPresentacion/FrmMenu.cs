@@ -12,9 +12,9 @@ using System.Windows.Forms;
 
 namespace CapaPresentacion
 {
-    public partial class Form1 : Form
+    public partial class FrmMenu : Form
     {
-        public Form1()
+        public FrmMenu()
         {
             InitializeComponent();
         }
@@ -28,6 +28,11 @@ namespace CapaPresentacion
         {
             FrmAñadirLibro frmAñadirLibro = new FrmAñadirLibro();
             frmAñadirLibro.ShowDialog();
+        }
+
+        private void archivoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
