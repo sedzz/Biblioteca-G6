@@ -7,7 +7,7 @@ namespace CapaDatos
 {
      public static class Consultas
     {
-        const string cadConexion = "Data Source = localhost; Initial Catalog = BibliotecaG6; Integrated Security = SSPI; MultipleActiveResultSets=true";
+        const string cadConexion = "Data Source = ordenadoralex\\bdalexsql; Initial Catalog = BibliotecaG6; Integrated Security = SSPI; MultipleActiveResultSets=true";
 
 
          public static List<Libro> BuscarLibroPorPorcionTitulo(string porcionTitulo, out string errores)

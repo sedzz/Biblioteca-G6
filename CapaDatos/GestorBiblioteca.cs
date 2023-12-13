@@ -8,7 +8,7 @@ namespace CapaDatos
 {
     public class GestorBiblioteca
     {
-        const string cadConexion = "Data Source=localhost; Initial Catalog=BibliotecaG6; Integrated Security=SSPI; MultipleActiveResultSets=true";
+        const string cadConexion = "Data Source=ordenadoralex\\bdalexsql; Initial Catalog=BibliotecaG6; Integrated Security=SSPI; MultipleActiveResultSets=true";
         DatosBiblioteca biblioteca = new DatosBiblioteca("4V", "San Jorge", "./logo.png");
 
 
@@ -293,10 +293,8 @@ namespace CapaDatos
 
                         if (prestamos.Read())
                         {
-                            errores = "El libro tiene unidades prestadas. No se ha borrado de la biblioteca.";
-                        }
-                        else
-                        {
+                           
+                        
                             string sqlBorrarVaSobre = "DELETE FROM Va_Sobre WHERE ISBN_Libro = @isbn";
                             SqlCommand cmdBorrarVaSobre = new SqlCommand(sqlBorrarVaSobre, conexion);
                             cmdBorrarVaSobre.Parameters.AddWithValue("@isbn", isbnLibro);
@@ -336,7 +334,7 @@ namespace CapaDatos
                 try
                 {
                     conexion.Open();
-                    string sql = "SELECT NumCarnetLector, FechaDevolucion FROM Toma_Prestado WHERE FechaDevolucion < GETDATE()";
+                    string sql = "SELECT DISTINCT NumCarnetLector FROM Toma_Prestado WHERE FechaDevolucion < GETDATE()";
                     SqlCommand cmdMorosos = new SqlCommand(sql, conexion);
                     SqlDataReader datos = cmdMorosos.ExecuteReader();
 
@@ -346,36 +344,25 @@ namespace CapaDatos
                     }
                     else
                     {
-                        List<Prestamo> prestamos = new List<Prestamo>();
-
                         while (datos.Read())
                         {
-                            Prestamo prestamo = new Prestamo
+                            Lector lector = new Lector
                             {
-                                NumCarnetLector = datos["NumCarnetLector"].ToString(),
-                                FechaDevolucion = Convert.ToDateTime(datos["FechaDevolucion"])
+                                NumCarnet = datos["NumCarnet"].ToString()
                             };
-                            prestamos.Add(prestamo);
-                        }
-
-                        prestamos = prestamos.OrderBy(p => p.NumCarnetLector).ThenBy(p => p.FechaDevolucion).ToList();
-                        string currentCarnet = null;
-                        foreach (Prestamo prestamo in prestamos)
-                        {
-                            if (currentCarnet != prestamo.NumCarnetLector)
-                            {
-                                currentCarnet = prestamo.NumCarnetLector;
-                            }
+                            lista.Add(lector);
                         }
                     }
                 }
                 catch (Exception exc)
                 {
-                    errores = "Error al buscar los lectores morosos: " + exc;
+                    errores = "Error al buscar los lectores morosos: " + exc.Message;
                 }
-                return lista;
             }
+
+            return lista;
         }
+
 
     }
 }
