@@ -8,7 +8,7 @@ namespace CapaDatos
 {
     public class GestorBiblioteca
     {
-        const string cadConexion = "Data Source=localhost; Initial Catalog=BibliotecaG6; Integrated Security=SSPI; MultipleActiveResultSets=true";
+        const string cadConexion = "Data Source= DESKTOP-T5I655L\\SEBASERVER; Initial Catalog=BibliotecaG6; Integrated Security=SSPI; MultipleActiveResultSets=true";
         DatosBiblioteca biblioteca = new DatosBiblioteca("4V", "San Jorge", "./logo.png");
 
         public void AñadirLibro(string isbn, string titulo, string editorial, string sinopsis, string caratula, int unidadesExistentes, string disponibilidad, List<Autor> autores, List<Categoria> categorias, out string errores)
@@ -160,7 +160,7 @@ namespace CapaDatos
 
                         if (prestamos.Read())
                         {
-                            errores = "El libro tiene unidades prestadas. No se ha borrado de la biblioteca.";
+                            errores = "El libro tiene unidades prestadas. No se ha podido borrado de la biblioteca.";
                         }
                         else
                         {

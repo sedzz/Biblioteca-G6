@@ -7,7 +7,7 @@ namespace CapaDatos
 {
      public static class Consultas
     {
-        const string cadConexion = "Data Source = localhost; Initial Catalog = BibliotecaG6; Integrated Security = SSPI; MultipleActiveResultSets=true";
+        const string cadConexion = "Data Source = DESKTOP-T5I655L\\SEBASERVER; Initial Catalog = BibliotecaG6; Integrated Security = SSPI; MultipleActiveResultSets=true";
 
 
          public static List<Libro> BuscarLibroPorPorcionTitulo(string porcionTitulo, out string errores)
@@ -125,7 +125,6 @@ namespace CapaDatos
                                         Id = (int)datos["ID"],
                                         Nombre = datos["Nombre"].ToString()
                                     };
-                                    return autor;
                                 }
                             }
                         }
@@ -142,7 +141,7 @@ namespace CapaDatos
             }
         }
 
-         public static List<Autor> BuscarAutorPorPorcionNombre(string porcionNombre, out string errores)
+        public static List<Autor> BuscarAutorPorPorcionNombre(string porcionNombre, out string errores)
         {
             errores = "";
             List<Autor> resultado = new List<Autor>();
@@ -251,7 +250,7 @@ namespace CapaDatos
                                         Nombre = datos["Nombre"].ToString(),
                                         Contraseña = datos["Contrasena"].ToString(),
                                         Telefono = datos["Telefono"].ToString(),
-                                        Gmail = datos["Gmail"].ToString()
+                                        Gmail = datos["Email"].ToString()
                                     };
                                     return lector;
                                 }

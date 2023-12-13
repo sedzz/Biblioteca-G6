@@ -22,7 +22,7 @@ namespace CapaPresentacion
             gestion = new GestorBiblioteca();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new frmLibros());
+            Application.Run(new FrmPrestamo());
         }
     }
 }
