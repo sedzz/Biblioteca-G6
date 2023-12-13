@@ -8,6 +8,7 @@ namespace Entidades
 {
     public class Prestamo 
     {
+        public string ISBN_Libro { get; set; }
         public string NumCarnetLector { get; set; }
         public DateTime FechaPrestamo { get; set; }
         public DateTime FechaDevolucion { get; set; }
@@ -20,6 +21,13 @@ namespace Entidades
             this.FechaPrestamo = FechaPrestamo;
             this.FechaDevolucion = FechaDevolucion;
 
+        }
+        public Prestamo(string iSBN_Libro, string numCarnetLector, DateTime fechaPrestamo, DateTime fechaDevolucion)
+        {
+            ISBN_Libro = iSBN_Libro;
+            NumCarnetLector = numCarnetLector;
+            FechaPrestamo = fechaPrestamo;
+            FechaDevolucion = fechaDevolucion;
         }
     }
 }

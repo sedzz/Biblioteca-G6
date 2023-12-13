@@ -381,6 +381,64 @@ namespace CapaDatos
             return null;
 
         }
+        public static List<Prestamo> DevolverListaDeLibrosPrestados(string numCarnet, out string error)
+        {
+            error = "";
+
+            const string cadConexion = "Data Source = localhost; Initial Catalog = BibliotecaG6; Integrated Security = SSPI; MultipleActiveResultSets=true";
+
+            using (SqlConnection conexion = new SqlConnection(cadConexion))
+            {
+
+                try
+                {
+                    conexion.Open();
+                    string sqlanyadirLibro = $"SELECT COUNT() FROM Lector WHERE NumCarnet = '{numCarnet}';";
+                    SqlCommand existeUnLector = new SqlCommand(sqlanyadirLibro, conexion);
+
+                    SqlDataReader resultadoExisteLector = existeUnLector.ExecuteReader();
+
+                    if (resultadoExisteLector.FieldCount != -1)
+                    {
+                        List<Prestamo> listaLibrosPrestados = new List<Prestamo>();
+                        string consultaLibrosDeUnLector = $"SELECT * FROM Toma_Prestado WHERE NumCarnet = '{numCarnet}';";
+                        SqlCommand librosDeUnLector = new SqlCommand(consultaLibrosDeUnLector, conexion);
+
+                        SqlDataReader resultadoLibroDeUnLector = librosDeUnLector.ExecuteReader();
+
+                        if (!resultadoLibroDeUnLector.HasRows)
+                        {
+                            error = "No se han encontrado libros prestados al lector";
+                        }
+                        else
+                        {
+
+                            while (resultadoLibroDeUnLector.Read())
+                            {
+                                string isbnLibro = (string)resultadoLibroDeUnLector["ISBN_Libro"];
+                                DateTime fecha_Prestamo = (DateTime)resultadoLibroDeUnLector["Fecha_Prestamo"];
+                                DateTime fecha_Devolucion = (DateTime)resultadoLibroDeUnLector["Fecha_Devolucion"];
+                                string numCarnetPrestamo = (string)resultadoLibroDeUnLector["NumCarnet"];
+                                Prestamo libroPrestado = new Prestamo(isbnLibro, numCarnetPrestamo, fecha_Prestamo, fecha_Devolucion);
+                                listaLibrosPrestados.Add(libroPrestado);
+                            }
+                            return listaLibrosPrestados;
+                        }
+                    }
+                    else
+                    {
+                        error = $"No se ha encontrado un lector";
+
+                    }
+                }
+                catch (Exception)
+                {
+                    error = "Error al agregar el libro";
+                    throw;
+                }
+                return null;
+            }
+        }
     }
 }
 
