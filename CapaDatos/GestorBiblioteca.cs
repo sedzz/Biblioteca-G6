@@ -8,7 +8,7 @@ namespace CapaDatos
 {
     public class GestorBiblioteca
     {
-        const string cadConexion = "Data Source=ordenadoralex\\bdalexsql; Initial Catalog=BibliotecaG6; Integrated Security=SSPI; MultipleActiveResultSets=true";
+        const string cadConexion = "Data Source=.; Initial Catalog=BibliotecaG6; Integrated Security=SSPI; MultipleActiveResultSets=true";
         DatosBiblioteca biblioteca = new DatosBiblioteca("4V", "San Jorge", "./logo.png");
 
 
@@ -66,7 +66,7 @@ namespace CapaDatos
                     {
                         autoresCategoriasExistentes = comprobarExistenciaAutor(autor.Id, out errores);
                     }
-                    //Sale de la función sin añadir el libro, si hay autores o categorías inexistentes en la base de datos.
+                    //Sale de la función sin añadir el libro si hay autores o categorías inexistentes en la base de datos.
                     if (!autoresCategoriasExistentes)
                     {
                         errores = "Hay autores o categorías que no existen en la base de datos. Añade primero los autores o libros.";
