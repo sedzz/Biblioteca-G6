@@ -5,13 +5,21 @@ using System.Data.SqlClient;
 
 namespace CapaDatos
 {
+
+     /// <summary>
+     /// Esta clase contiene consultas contra la base de datos, para obtener datos de libros, autores, lectores, etc.
+     /// </summary>
      public static class Consultas
     {
         const string cadConexion = "Data Source = DESKTOP-T5I655L\\SEBASERVER; Initial Catalog = BibliotecaG6; Integrated Security = SSPI; MultipleActiveResultSets=true";
 
 
-
-
+         /// <summary>
+         /// Este método permite obtener todos los libros de la base de datos cuyo nombre contenga la porción de título proporcionada. Devuelve una lista de libros.
+         /// </summary>
+         /// <param name="porcionTitulo"></param>
+         /// <param name="errores"></param>
+         /// <returns></returns>
          public static List<Libro> BuscarLibroPorPorcionTitulo(string porcionTitulo, out string errores)
         {
             errores = "";
@@ -60,6 +68,11 @@ namespace CapaDatos
 
 
 
+         /// <summary>
+         /// Este método obtiene todas las categorías de la base de datos y las devuelve en forma de lista de categorías.
+         /// </summary>
+         /// <param name="errores"></param>
+         /// <returns></returns>
          public static List<Categoria> TodasLasCategorias(out string errores)
         {
             errores = "";
@@ -103,7 +116,12 @@ namespace CapaDatos
 
 
 
-        //De autor@, lector@ por identificador 
+         
+         /// <summary>
+         /// Recibiendo un id de autor, devuelve dicho autor con todos sus datos, o null si no se encuentra.
+         /// </summary>
+         /// <param name="id"></param>
+         /// <returns></returns>
          public static Autor BuscarAutorPorID(int id)
         {
             using (SqlConnection conexion = new SqlConnection(cadConexion))
@@ -143,6 +161,14 @@ namespace CapaDatos
             }
         }
 
+
+
+        /// <summary>
+        /// Recibiendo una porción de nombre, devuelve una lista de autores cuyo nombre contenga dicha porción. Si no hay, devuelve null.
+        /// </summary>
+        /// <param name="porcionNombre"></param>
+        /// <param name="errores"></param>
+        /// <returns></returns>
         public static List<Autor> BuscarAutorPorPorcionNombre(string porcionNombre, out string errores)
         {
             errores = "";
@@ -183,6 +209,14 @@ namespace CapaDatos
             return null;
 
         }
+
+
+         /// <summary>
+         /// Devuelve una lista de lectores cuyo nombre contenga la porción de nombre proporcionada. Si no hay, devuelve null.
+         /// </summary>
+         /// <param name="porcionNombre"></param>
+         /// <param name="errores"></param>
+         /// <returns></returns>
          public static List<Lector> BuscarLectorPorPorcionNombre(string porcionNombre, out string errores)
         {
             errores = "";
@@ -228,6 +262,14 @@ namespace CapaDatos
             return null;
 
         }
+
+
+
+         /// <summary>
+         /// Recibiendo un número de carné, devuelve el lector con dicho carné, o null si no se encuentra.
+         /// </summary>
+         /// <param name="NumCarnet"></param>
+         /// <returns></returns>
          public static Lector BuscarLectorPorID(string NumCarnet)
         {
             using (SqlConnection conexion = new SqlConnection(cadConexion))
@@ -243,7 +285,6 @@ namespace CapaDatos
                         {
                             if (datos.HasRows)
                             {
-                                // Crear un objeto Libro y asignar valores desde la base de datos
                                 if (datos.Read())
                                 {
                                     Lector lector = new Lector
@@ -260,17 +301,22 @@ namespace CapaDatos
                         }
                     }
 
-                    // Si no se encuentra ningún libro con el ISBN dado, puedes devolver null o lanzar una excepción personalizada.
                     return null;
                 }
                 catch (Exception)
                 {
-                    // Manejar la excepción aquí o lanzarla nuevamente si es necesario.
                     throw;
                 }
             }
         }
 
+
+
+         /// <summary>
+         /// Recibiendo un isbn, devuelve el libro con dicho isbn, o null si no se encuentra.
+         /// </summary>
+         /// <param name="isbn"></param>
+         /// <returns></returns>
          public static Libro BuscarLibroPorISBN(string isbn)
         {
             using (SqlConnection conexion = new SqlConnection(cadConexion))
@@ -305,16 +351,22 @@ namespace CapaDatos
                         }
                     }
 
-                    // Si no se encuentra ningún libro con el ISBN dado, puedes devolver null o lanzar una excepción personalizada.
                     return null;
                 }
                 catch (Exception)
                 {
-                    // Manejar la excepción aquí o lanzarla nuevamente si es necesario.
                     throw;
                 }
             }
         }
+
+
+        /// <summary>
+        /// Este método devuelve una Categoria, cuyo ID coincida con el proporcionado. Si no hay, devuelve null.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="errores"></param>
+        /// <returns></returns>
         public static Categoria BuscarCategoriaPorId(int id, out string errores)
         {
             errores = "";
@@ -349,6 +401,14 @@ namespace CapaDatos
             return null;
 
         }
+
+
+         /// <summary>
+         /// Este método, recibiendo un nombre de categoría, devuelve la categoría con dicho nombre, o null si no se encuentra.
+         /// </summary>
+         /// <param name="nombre"></param>
+         /// <param name="errores"></param>
+         /// <returns></returns>
          public static Categoria BuscarCategoriaPorNombre(string nombre, out string errores)
         {
             errores = "";
@@ -383,6 +443,14 @@ namespace CapaDatos
             return null;
 
         }
+
+
+        /// <summary>
+        /// Recibiendo un número de carnet, devuelve los prestamos que tiene dicho lector, o null si no tiene ninguno, o no existe el lector con ese número de carnet.
+        /// </summary>
+        /// <param name="numCarnet"></param>
+        /// <param name="error"></param>
+        /// <returns></returns>
         public static List<Prestamo> DevolverListaDeLibrosPrestados(string numCarnet, out string error)
         {
             error = "";
@@ -441,7 +509,57 @@ namespace CapaDatos
                 return null;
             }
         }
-    }
+
+
+
+
+        public static List<Lector> ObtenerTodosLosLectores(out string errores) 
+        {
+            errores = "";
+            
+            using (SqlConnection conexion = new SqlConnection(cadConexion))
+            {
+                try
+                {
+                    conexion.Open();
+                    string sqlTodosLosLectores = "SELECT * FROM Lector";
+                    SqlCommand cmdTodosLosLectores = new SqlCommand(sqlTodosLosLectores, conexion);
+
+                    SqlDataReader todosLosLectores = cmdTodosLosLectores.ExecuteReader();
+
+                    if (!todosLosLectores.HasRows)
+                    {
+                        errores = "No se encontraron lectores";
+                        return null;
+                    }
+                    else
+                    {
+                        List<Lector> listaLectores = new List<Lector>();
+                        while (todosLosLectores.Read())
+                        {
+                            string NumCarnet = todosLosLectores["NumCarnet"].ToString();
+                            string Nombre = todosLosLectores["Nombre"].ToString();
+                            string Contraseña = todosLosLectores["Contrasena"].ToString();
+                            string Telefono = todosLosLectores["Telefono"].ToString();
+                            string Email = todosLosLectores["Email"].ToString();
+
+                            Lector lector = new Lector(NumCarnet, Nombre, Contraseña, Telefono, Email);
+                            listaLectores.Add(lector);
+                        }
+                        return listaLectores;
+                    }
+                }
+                catch (Exception e)
+                {
+                    errores = "Ocurrió un error al conectarse con la base de datos para buscar lectores: " + e.Message;
+                }
+                return null;
+            }   
+
+        }
+
+
+     }
 }
 
 

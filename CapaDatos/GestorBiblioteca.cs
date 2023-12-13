@@ -86,6 +86,8 @@ namespace CapaDatos
                         return;
                     }
 
+                    //Inserto el libro en la base de datos, habiendo comprobado los datos recibidos.
+
                     string sqlAnyadirLibro = "INSERT INTO Libro (ISBN, Titulo, Editorial, Sinopsis, Caratula, Unidades, Disponibilidad) " +
                         "VALUES (@isbn, @titulo, @editorial, @sinopsis, @caratula, @unidades, @disponibilidad)";
                     SqlCommand cmdInsertarLibro = new SqlCommand(sqlAnyadirLibro, conexion);
@@ -100,6 +102,8 @@ namespace CapaDatos
 
                     int filasAfectadas = cmdInsertarLibro.ExecuteNonQuery();
 
+
+                    //Inserto los registros en la tabla Libro-Categoría, por cada categoría recibida, habiendo comprobado ya que existen en la base de datos.
                     string sqlAnyadirVaSobre = "INSERT INTO Va_Sobre (ISBN_Libro, Id_Categoria) VALUES (@isbn, @idCategoria)";
                     SqlCommand cmdInsertarVaSobre = new SqlCommand(sqlAnyadirVaSobre, conexion);
 
@@ -112,6 +116,7 @@ namespace CapaDatos
                         cmdInsertarVaSobre.ExecuteNonQuery();
                     }
 
+                    //Inserto los registros en la tabla Libro-Autor, por cada autor recibido, habiendo comprobado ya que existen en la base de datos.
                     string sqlAnyadirEscribe = "INSERT INTO Escribe (ISBN_Libro, Id_Autor) VALUES (@isbn, @idAutor)";
                     SqlCommand cmdInsertarEscribe = new SqlCommand(sqlAnyadirEscribe, conexion);
 
@@ -417,6 +422,53 @@ namespace CapaDatos
             }
 
             return lista;
+        }
+
+        public void Devolucion(List<Prestamo> listaLibrosDevolucion, out string error)
+        {
+            error = "";
+
+            using (SqlConnection conexion = new SqlConnection(cadConexion))
+            {
+                try
+                {
+                    conexion.Open();
+
+                    foreach (var libroParaDevolver in listaLibrosDevolucion)
+                    {
+                        string consultaEliminarLibroPrestado = $"DELETE FROM Toma_Prestado WHERE Isbn_libro = @isbn AND Fecha_Prestamo = @Fecha_Prestamo AND Fecha_Devolucion = @Fecha_Devolucion"; ;
+                        SqlCommand EliminarLibroPrestado = new SqlCommand(consultaEliminarLibroPrestado, conexion);
+
+                        EliminarLibroPrestado.Parameters.AddWithValue("@isbn", libroParaDevolver.ISBN_Libro);
+                        EliminarLibroPrestado.Parameters.AddWithValue("@Fecha_Devolucion", libroParaDevolver.FechaDevolucion);
+                        EliminarLibroPrestado.Parameters.AddWithValue("@Fecha_Prestamo", libroParaDevolver.FechaPrestamo);
+                        EliminarLibroPrestado.Parameters.AddWithValue("@NumCarnet", libroParaDevolver.NumCarnetLector);
+
+
+
+                        int numDeFilasAceptadas = EliminarLibroPrestado.ExecuteNonQuery();
+
+                     
+
+
+
+                    }
+
+                    
+
+                }
+                catch (Exception exc)
+                {
+                    error = "Error al eliminar las devoluciones: " + exc;
+                }
+
+
+
+
+
+            }
+
+
         }
 
 

@@ -64,11 +64,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Devoluvion.cs">
+    <Compile Include="Devolucion.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Devoluvion.designer.cs">
-      <DependentUpon>Devoluvion.cs</DependentUpon>
+    <Compile Include="Devolucion.designer.cs">
+      <DependentUpon>Devolucion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmLectores.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmLectores.Designer.cs">
+      <DependentUpon>FrmLectores.cs</DependentUpon>
     </Compile>
     <Compile Include="FrmAutores.cs">
       <SubType>Form</SubType>
@@ -112,16 +118,13 @@
     <Compile Include="FrmPrestamo.Designer.cs">
       <DependentUpon>FrmPrestamo.cs</DependentUpon>
     </Compile>
-    <Compile Include="FrmUsuarios.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FrmUsuarios.Designer.cs">
-      <DependentUpon>FrmUsuarios.cs</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Devoluvion.resx">
-      <DependentUpon>Devoluvion.cs</DependentUpon>
+    <EmbeddedResource Include="Devolucion.resx">
+      <DependentUpon>Devolucion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmLectores.resx">
+      <DependentUpon>FrmLectores.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmAutores.resx">
       <DependentUpon>FrmAutores.cs</DependentUpon>
@@ -143,9 +146,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmPrestamo.resx">
       <DependentUpon>FrmPrestamo.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FrmUsuarios.resx">
-      <DependentUpon>FrmUsuarios.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
