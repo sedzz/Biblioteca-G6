@@ -10,6 +10,8 @@ namespace CapaDatos
         const string cadConexion = "Data Source = DESKTOP-T5I655L\\SEBASERVER; Initial Catalog = BibliotecaG6; Integrated Security = SSPI; MultipleActiveResultSets=true";
 
 
+
+
          public static List<Libro> BuscarLibroPorPorcionTitulo(string porcionTitulo, out string errores)
         {
             errores = "";
