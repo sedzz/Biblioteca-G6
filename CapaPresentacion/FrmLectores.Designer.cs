@@ -68,6 +68,7 @@
             this.btnMostrarTodos.TabIndex = 2;
             this.btnMostrarTodos.Text = "Mostrar tod@s";
             this.btnMostrarTodos.UseVisualStyleBackColor = true;
+            this.btnMostrarTodos.Click += new System.EventHandler(this.btnMostrarTodos_Click);
             // 
             // btnBuscarNombre
             // 

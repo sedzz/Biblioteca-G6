@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using CapaDatos; 
+using Entidades;
 
 namespace CapaPresentacion
 {
@@ -17,5 +19,11 @@ namespace CapaPresentacion
             InitializeComponent();
         }
 
+        private void btnMostrarTodos_Click(object sender, EventArgs e)
+        {
+            string errores;
+            List<Lector> lectores = Consultas.ObtenerTodosLosLectores(out errores);
+            dgvSocios.DataSource = lectores;
+        }
     }
 }

@@ -513,6 +513,11 @@ namespace CapaDatos
 
 
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="errores"></param>
+        /// <returns></returns>
         public static List<Lector> ObtenerTodosLosLectores(out string errores) 
         {
             errores = "";
