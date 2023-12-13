@@ -1,6 +1,6 @@
 ﻿namespace CapaPresentacion
 {
-    partial class Devoluvion
+    partial class Devolucion
     {
         /// <summary>
         /// Required designer variable.
