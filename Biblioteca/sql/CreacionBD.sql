@@ -1,6 +1,6 @@
 USE MASTER 
 
-IF EXISTS (SELECT name FROM sys.databases WHERE name = 'Biblioteca')
+IF EXISTS (SELECT name FROM sys.databases WHERE name = 'BibliotecaG6')
     BEGIN
         DROP DATABASE BibliotecaG6
     END
