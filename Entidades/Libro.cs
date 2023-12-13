@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Entidades;
 namespace Entidades
-{
+{  
     public class Libro : IEquatable<Libro>
     {
         const string cadConexion = "Data Source = localhost; Initial Catalog = BibliotecaG6; Integrated Security = SSPI; MultipleActiveResultSets=true";
