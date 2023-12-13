@@ -21,7 +21,7 @@ namespace CapaDatos
     /// </summary>
     public class GestorBiblioteca
     {
-        const string cadConexion = "Data Source=.; Initial Catalog=BibliotecaG6; Integrated Security=SSPI; MultipleActiveResultSets=true";
+        const string cadConexion = "Data Source= DESKTOP-T5I655L\\SEBASERVER; Initial Catalog=BibliotecaG6; Integrated Security=SSPI; MultipleActiveResultSets=true";
         DatosBiblioteca biblioteca = new DatosBiblioteca("4V", "San Jorge", "./logo.png");
 
 
@@ -514,6 +514,41 @@ namespace CapaDatos
                     return;
                 }
                 
+            }
+
+
+        }
+
+        public void AñadirAutor(string nombre, out string errores)
+        {
+            errores = "";
+            if (String.IsNullOrWhiteSpace(nombre))
+            {
+                errores = "No se pueden dejar campos vacíos";
+                return;
+            }
+
+            using (SqlConnection conexion = new SqlConnection(cadConexion))
+            {
+                try
+                {
+                    conexion.Open();
+
+                    string sqlAnyadirAutor = "INSERT INTO Autor (Nombre) " +
+                        "VALUES (@nombre)";
+                    SqlCommand cmdInsertarAutor = new SqlCommand(sqlAnyadirAutor, conexion);
+
+                    cmdInsertarAutor.Parameters.AddWithValue("@nombre", nombre);
+
+                    cmdInsertarAutor.ExecuteNonQuery();
+
+                }
+                catch (Exception e)
+                {
+                    errores = "Error al conectar con la base de datos" + e;
+                    return;
+                }
+
             }
 
 
