@@ -365,6 +365,53 @@ namespace CapaDatos
             return lista;
         }
 
+        public void Devolucion(List<Prestamo> listaLibrosDevolucion, out string error)
+        {
+            error = "";
+
+            using (SqlConnection conexion = new SqlConnection(cadConexion))
+            {
+                try
+                {
+                    conexion.Open();
+
+                    foreach (var libroParaDevolver in listaLibrosDevolucion)
+                    {
+                        string consultaEliminarLibroPrestado = $"DELETE FROM Toma_Prestado WHERE Isbn_libro = @isbn AND Fecha_Prestamo = @Fecha_Prestamo AND Fecha_Devolucion = @Fecha_Devolucion"; ;
+                        SqlCommand EliminarLibroPrestado = new SqlCommand(consultaEliminarLibroPrestado, conexion);
+
+                        EliminarLibroPrestado.Parameters.AddWithValue("@isbn", libroParaDevolver.ISBN_Libro);
+                        EliminarLibroPrestado.Parameters.AddWithValue("@Fecha_Devolucion", libroParaDevolver.FechaDevolucion);
+                        EliminarLibroPrestado.Parameters.AddWithValue("@Fecha_Prestamo", libroParaDevolver.FechaPrestamo);
+                        EliminarLibroPrestado.Parameters.AddWithValue("@NumCarnet", libroParaDevolver.NumCarnetLector);
+
+
+
+                        int numDeFilasAceptadas = EliminarLibroPrestado.ExecuteNonQuery();
+
+                     
+
+
+
+                    }
+
+                    
+
+                }
+                catch (Exception exc)
+                {
+                    error = "Error al eliminar las devoluciones: " + exc;
+                }
+
+
+
+
+
+            }
+
+
+        }
+
 
     }
 }
