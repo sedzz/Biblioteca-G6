@@ -31,5 +31,10 @@ namespace CapaPresentacion
         {
 
         }
+
+        private void btnTodasCategorias_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
