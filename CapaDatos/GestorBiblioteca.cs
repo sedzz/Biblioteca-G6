@@ -21,7 +21,7 @@ namespace CapaDatos
     /// </summary>
     public class GestorBiblioteca
     {
-        const string cadConexion = "Data Source= DESKTOP-T5I655L\\SEBASERVER; Initial Catalog=BibliotecaG6; Integrated Security=SSPI; MultipleActiveResultSets=true";
+        const string cadConexion = "Data Source= .; Initial Catalog=BibliotecaG6; Integrated Security=SSPI; MultipleActiveResultSets=true";
         DatosBiblioteca biblioteca = new DatosBiblioteca("4V", "San Jorge", "./logo.png");
 
 
@@ -510,7 +510,7 @@ namespace CapaDatos
                 }
                 catch (Exception e)
                 {
-                    errores = "Error al conectar con la base de datos" + e;
+                    errores = "Error al conectar con la base de datos: " + e;
                     return;
                 }
                 

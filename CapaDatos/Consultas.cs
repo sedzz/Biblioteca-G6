@@ -11,7 +11,7 @@ namespace CapaDatos
      /// </summary>
      public static class Consultas
     {
-        const string cadConexion = "Data Source = DESKTOP-T5I655L\\SEBASERVER; Initial Catalog = BibliotecaG6; Integrated Security = SSPI; MultipleActiveResultSets=true";
+        const string cadConexion = "Data Source = .; Initial Catalog = BibliotecaG6; Integrated Security = SSPI; MultipleActiveResultSets=true";
 
 
          /// <summary>
@@ -244,7 +244,7 @@ namespace CapaDatos
                             string Nombre = datos["Nombre"].ToString();
                             string Contraseña = datos["Contrasena"].ToString();
                             string Telefono = datos["Telefono"].ToString();
-                            string Gmail = datos["Gmail"].ToString();
+                            string Gmail = datos["Email"].ToString();
 
                             Lector lector = new Lector(NumCarnet, Nombre,Contraseña,Telefono,Gmail);
                             resultado.Add(lector);
@@ -270,8 +270,9 @@ namespace CapaDatos
          /// </summary>
          /// <param name="NumCarnet"></param>
          /// <returns></returns>
-         public static Lector BuscarLectorPorID(string NumCarnet)
+         public static Lector BuscarLectorPorID(string NumCarnet, out string errores)
         {
+            errores = "";
             using (SqlConnection conexion = new SqlConnection(cadConexion))
             {
                 try
@@ -300,11 +301,12 @@ namespace CapaDatos
                             }
                         }
                     }
-
+                    errores ="No se encontró un lector con ese número de carné.";
                     return null;
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
+                    errores ="Ocurrió un error al buscar el lector en la base de datos"+e;
                     throw;
                 }
             }

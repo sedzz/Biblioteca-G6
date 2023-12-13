@@ -40,8 +40,12 @@ namespace CapaPresentacion
             {
                 MessageBox.Show("La fecha de entrega debe ser mayor a 15 dias"); return;
             }
-
-            Lector prestatario = Consultas.BuscarLectorPorID(lector);
+            string erroresBuscarLectorPorId;
+            Lector prestatario = Consultas.BuscarLectorPorID(lector, out erroresBuscarLectorPorId);
+            if(erroresBuscarLectorPorId != "")
+            {
+                MessageBox.Show(erroresBuscarLectorPorId); 
+            }
             Libro libro = Consultas.BuscarLibroPorISBN(isbn);
             GestorBiblioteca gestorBiblioteca = Program.gestion;
           

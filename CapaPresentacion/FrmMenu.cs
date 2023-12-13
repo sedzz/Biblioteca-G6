@@ -30,9 +30,11 @@ namespace CapaPresentacion
             frmAñadirLibro.ShowDialog();
         }
 
-        private void archivoToolStripMenuItem_Click(object sender, EventArgs e)
+        private void bajaDeUsuariosToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            FrmLectores frmLectores = new FrmLectores();
+            frmLectores.Show();
+            Hide();
         }
     }
 }

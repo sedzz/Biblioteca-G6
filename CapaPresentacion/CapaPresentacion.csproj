@@ -112,6 +112,12 @@
     <Compile Include="FrmMorosos.Designer.cs">
       <DependentUpon>FrmMorosos.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmNuevoSocio.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmNuevoSocio.Designer.cs">
+      <DependentUpon>FrmNuevoSocio.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmPrestamo.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -143,6 +149,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmMorosos.resx">
       <DependentUpon>FrmMorosos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmNuevoSocio.resx">
+      <DependentUpon>FrmNuevoSocio.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmPrestamo.resx">
       <DependentUpon>FrmPrestamo.cs</DependentUpon>
