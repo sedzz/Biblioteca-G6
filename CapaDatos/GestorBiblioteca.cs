@@ -254,6 +254,25 @@ namespace CapaDatos
                                 anyadirDevolucion.Parameters.AddWithValue("@isbn", isbn);
                                 anyadirDevolucion.Parameters.AddWithValue("@numCarnet", numCarnet);
                                 anyadirDevolucion.ExecuteNonQuery();
+
+                                string verificarUnidades = "SELECT Unidades FROM Libro WHERE ISBN = @isbn";
+                                SqlCommand verificarUnidadesCmd = new SqlCommand(verificarUnidades, conexion);
+                                verificarUnidadesCmd.Parameters.AddWithValue("@isbn", isbn);
+                                int unidades = (int)verificarUnidadesCmd.ExecuteScalar();
+
+                                if ((unidades -1) >= 0)
+                                {
+                                    string sqlActualizarUnidadesLibro = "UPDATE Libro SET Unidades = Unidades - 1 WHERE ISBN = @isbn";
+                                    SqlCommand actualizarUnidadesLibro = new SqlCommand(sqlActualizarUnidadesLibro, conexion);
+                                    actualizarUnidadesLibro.Parameters.AddWithValue("@isbn", isbn);
+                                    actualizarUnidadesLibro.ExecuteNonQuery();
+                                }
+                                else
+                                {
+                                    errores = "No quedam mas unidades de este libro";
+                                }
+
+                                
                             }
                         }
                     }

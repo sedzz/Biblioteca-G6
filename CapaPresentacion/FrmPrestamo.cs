@@ -62,12 +62,9 @@ namespace CapaPresentacion
                 MessageBox.Show(errores); return;
             }
 
-
-
-
-            MessageBox.Show("todo bien");
             lblNombreLibro.Text = libro.Titulo;
-            lblResultado.Text = "Todo bien";
+            lblResultado.Text = "Libro Prestado Correctamente";
+            lblCantidadLibros.Text = "Libros Restantes : "+libro.UnidadesExistentes.ToString();
 
         }
     }
