@@ -279,6 +279,25 @@ namespace CapaDatos
                                 anyadirDevolucion.Parameters.AddWithValue("@isbn", isbn);
                                 anyadirDevolucion.Parameters.AddWithValue("@numCarnet", numCarnet);
                                 anyadirDevolucion.ExecuteNonQuery();
+
+                                string verificarUnidades = "SELECT Unidades FROM Libro WHERE ISBN = @isbn";
+                                SqlCommand verificarUnidadesCmd = new SqlCommand(verificarUnidades, conexion);
+                                verificarUnidadesCmd.Parameters.AddWithValue("@isbn", isbn);
+                                int unidades = (int)verificarUnidadesCmd.ExecuteScalar();
+
+                                if ((unidades -1) >= 0)
+                                {
+                                    string sqlActualizarUnidadesLibro = "UPDATE Libro SET Unidades = Unidades - 1 WHERE ISBN = @isbn";
+                                    SqlCommand actualizarUnidadesLibro = new SqlCommand(sqlActualizarUnidadesLibro, conexion);
+                                    actualizarUnidadesLibro.Parameters.AddWithValue("@isbn", isbn);
+                                    actualizarUnidadesLibro.ExecuteNonQuery();
+                                }
+                                else
+                                {
+                                    errores = "No quedam mas unidades de este libro";
+                                }
+
+                                
                             }
                         }
                     }
@@ -403,6 +422,53 @@ namespace CapaDatos
             }
 
             return lista;
+        }
+
+        public void Devolucion(List<Prestamo> listaLibrosDevolucion, out string error)
+        {
+            error = "";
+
+            using (SqlConnection conexion = new SqlConnection(cadConexion))
+            {
+                try
+                {
+                    conexion.Open();
+
+                    foreach (var libroParaDevolver in listaLibrosDevolucion)
+                    {
+                        string consultaEliminarLibroPrestado = $"DELETE FROM Toma_Prestado WHERE Isbn_libro = @isbn AND Fecha_Prestamo = @Fecha_Prestamo AND Fecha_Devolucion = @Fecha_Devolucion"; ;
+                        SqlCommand EliminarLibroPrestado = new SqlCommand(consultaEliminarLibroPrestado, conexion);
+
+                        EliminarLibroPrestado.Parameters.AddWithValue("@isbn", libroParaDevolver.ISBN_Libro);
+                        EliminarLibroPrestado.Parameters.AddWithValue("@Fecha_Devolucion", libroParaDevolver.FechaDevolucion);
+                        EliminarLibroPrestado.Parameters.AddWithValue("@Fecha_Prestamo", libroParaDevolver.FechaPrestamo);
+                        EliminarLibroPrestado.Parameters.AddWithValue("@NumCarnet", libroParaDevolver.NumCarnetLector);
+
+
+
+                        int numDeFilasAceptadas = EliminarLibroPrestado.ExecuteNonQuery();
+
+                     
+
+
+
+                    }
+
+                    
+
+                }
+                catch (Exception exc)
+                {
+                    error = "Error al eliminar las devoluciones: " + exc;
+                }
+
+
+
+
+
+            }
+
+
         }
 
 

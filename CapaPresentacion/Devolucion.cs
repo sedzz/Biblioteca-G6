@@ -12,9 +12,9 @@ using System.Windows.Forms;
 
 namespace CapaPresentacion
 {
-    public partial class Devoluvion : Form
+    public partial class Devolucion : Form
     {
-        public Devoluvion()
+        public Devolucion()
         {
             InitializeComponent();
         }

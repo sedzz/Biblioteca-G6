@@ -38,10 +38,11 @@
             this.label4 = new System.Windows.Forms.Label();
             this.dateFinal = new System.Windows.Forms.DateTimePicker();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.lblNombreLibro = new System.Windows.Forms.Label();
             this.lblResultado = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.lblNombreLibro = new System.Windows.Forms.Label();
+            this.lblCantidadLibros = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -122,6 +123,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.lblCantidadLibros);
             this.groupBox1.Controls.Add(this.lblNombreLibro);
             this.groupBox1.Controls.Add(this.lblResultado);
             this.groupBox1.Location = new System.Drawing.Point(448, 108);
@@ -130,14 +132,20 @@
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             // 
+            // lblNombreLibro
+            // 
+            this.lblNombreLibro.Location = new System.Drawing.Point(40, 85);
+            this.lblNombreLibro.Name = "lblNombreLibro";
+            this.lblNombreLibro.Size = new System.Drawing.Size(103, 20);
+            this.lblNombreLibro.TabIndex = 11;
+            // 
             // lblResultado
             // 
             this.lblResultado.AutoSize = true;
             this.lblResultado.Location = new System.Drawing.Point(40, 52);
             this.lblResultado.Name = "lblResultado";
-            this.lblResultado.Size = new System.Drawing.Size(35, 13);
+            this.lblResultado.Size = new System.Drawing.Size(0, 13);
             this.lblResultado.TabIndex = 0;
-            this.lblResultado.Text = "label6";
             // 
             // label5
             // 
@@ -157,13 +165,13 @@
             this.label6.TabIndex = 10;
             this.label6.Text = "REALIZAR PRESTAMO";
             // 
-            // lblNombreLibro
+            // lblCantidadLibros
             // 
-            this.lblNombreLibro.Location = new System.Drawing.Point(40, 85);
-            this.lblNombreLibro.Name = "lblNombreLibro";
-            this.lblNombreLibro.Size = new System.Drawing.Size(103, 20);
-            this.lblNombreLibro.TabIndex = 11;
-            this.lblNombreLibro.Text = "label7";
+            this.lblCantidadLibros.AutoSize = true;
+            this.lblCantidadLibros.Location = new System.Drawing.Point(43, 122);
+            this.lblCantidadLibros.Name = "lblCantidadLibros";
+            this.lblCantidadLibros.Size = new System.Drawing.Size(0, 13);
+            this.lblCantidadLibros.TabIndex = 12;
             // 
             // FrmPrestamo
             // 
@@ -205,5 +213,6 @@
         private System.Windows.Forms.Label lblResultado;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label lblNombreLibro;
+        private System.Windows.Forms.Label lblCantidadLibros;
     }
 }
