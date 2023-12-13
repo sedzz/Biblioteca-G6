@@ -203,7 +203,7 @@ namespace CapaDatos
                 try
                 {
                     conexion.Open();
-                    string sql = "SELECT NumCarnetLector, FechaDevolucion FROM Toma_Prestado WHERE FechaDevolucion < GETDATE()";
+                    string sql = "SELECT DISTINCT NumCarnetLector FROM Toma_Prestado WHERE FechaDevolucion < GETDATE()";
                     SqlCommand cmdMorosos = new SqlCommand(sql, conexion);
                     SqlDataReader datos = cmdMorosos.ExecuteReader();
 
@@ -213,36 +213,25 @@ namespace CapaDatos
                     }
                     else
                     {
-                        List<Prestamo> prestamos = new List<Prestamo>();
-
                         while (datos.Read())
                         {
-                            Prestamo prestamo = new Prestamo
+                            Lector lector = new Lector
                             {
-                                NumCarnetLector = datos["NumCarnetLector"].ToString(),
-                                FechaDevolucion = Convert.ToDateTime(datos["FechaDevolucion"])
+                                NumCarnet = datos["NumCarnet"].ToString()
                             };
-                            prestamos.Add(prestamo);
-                        }
-
-                        prestamos = prestamos.OrderBy(p => p.NumCarnetLector).ThenBy(p => p.FechaDevolucion).ToList();
-                        string currentCarnet = null;
-                        foreach (Prestamo prestamo in prestamos)
-                        {
-                            if (currentCarnet != prestamo.NumCarnetLector)
-                            {
-                                currentCarnet = prestamo.NumCarnetLector;
-                            }
+                            lista.Add(lector);
                         }
                     }
                 }
                 catch (Exception exc)
                 {
-                    errores = "Error al buscar los lectores morosos: " + exc;
+                    errores = "Error al buscar los lectores morosos: " + exc.Message;
                 }
-                return lista;
             }
+
+            return lista;
         }
+
 
     }
 }

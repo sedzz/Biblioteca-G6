@@ -79,6 +79,7 @@
             this.btnTodasCategorias.TabIndex = 4;
             this.btnTodasCategorias.Text = "Todas Las Categorías";
             this.btnTodasCategorias.UseVisualStyleBackColor = true;
+            this.btnTodasCategorias.Click += new System.EventHandler(this.btnTodasCategorias_Click);
             // 
             // btnAutorId
             // 
