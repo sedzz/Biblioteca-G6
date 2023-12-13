@@ -293,8 +293,10 @@ namespace CapaDatos
 
                         if (prestamos.Read())
                         {
-                           
-                        
+                            errores = "El libro tiene unidades prestadas. No se ha borrado de la biblioteca.";
+                        }
+                        else
+                        {
                             string sqlBorrarVaSobre = "DELETE FROM Va_Sobre WHERE ISBN_Libro = @isbn";
                             SqlCommand cmdBorrarVaSobre = new SqlCommand(sqlBorrarVaSobre, conexion);
                             cmdBorrarVaSobre.Parameters.AddWithValue("@isbn", isbnLibro);
