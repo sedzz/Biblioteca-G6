@@ -6,6 +6,19 @@ using System.Linq;
 
 namespace CapaDatos
 {
+
+
+    /// <summary>
+    /// Esta clase tiene los métodos necesarios para gestionar la biblioteca. Son los siguientes métodos:
+    ///     - AñadirLibro
+    ///     - ComprobarExistenciaCategoria
+    ///     - ComprobarExistenciaAutor
+    ///     - Prestamo
+    ///     - BorrarLibro
+    ///     - Morosos
+    ///     - AñadirLector
+    /// Todos estos métodos tienen las comprobaciones pertinentes de los datos recibidos, y se conectan a la base de datos para realizar las operaciones.
+    /// </summary>
     public class GestorBiblioteca
     {
         const string cadConexion = "Data Source=.; Initial Catalog=BibliotecaG6; Integrated Security=SSPI; MultipleActiveResultSets=true";
@@ -72,8 +85,6 @@ namespace CapaDatos
                         errores = "Hay autores o categorías que no existen en la base de datos. Añade primero los autores o libros.";
                         return;
                     }
-
-
 
                     string sqlAnyadirLibro = "INSERT INTO Libro (ISBN, Titulo, Editorial, Sinopsis, Caratula, Unidades, Disponibilidad) " +
                         "VALUES (@isbn, @titulo, @editorial, @sinopsis, @caratula, @unidades, @disponibilidad)";
@@ -200,6 +211,15 @@ namespace CapaDatos
 
 
 
+        /// <summary>
+        /// Método que hace nuevos préstamos, insertando los registros en la base de datos.
+        /// Comprueba que el libro con ese isbn exista, comprueba que el libro sea prestable, y no de solo consulta. Comprueba que el usuario no tenga préstamos morosos. Y comprueba que hayan unidades disponibles del libro.
+        /// </summary>
+        /// <param name="fechaPrestamo"></param>
+        /// <param name="fechaDevolucion"></param>
+        /// <param name="isbn"></param>
+        /// <param name="numCarnet"></param>
+        /// <param name="errores"></param>
         public void Prestamo(DateTime fechaPrestamo, DateTime fechaDevolucion, string isbn, string numCarnet, out string errores)
         {
             errores = "";
@@ -266,6 +286,14 @@ namespace CapaDatos
             }
         }
 
+
+
+        /// <summary>
+        /// Método que permite borrar libros de la base de datos, recibiendo su ISBN. Comprueba que el libro exista, y que no tenga unidades prestadas.
+        /// Borra los registros de la tabla Autor-libro, de la tabla Libro-Categoría y de la tabla libro.
+        /// </summary>
+        /// <param name="isbnLibro"></param>
+        /// <param name="errores"></param>
         public void BorrarLibro(string isbnLibro, out string errores)
         {
             errores = "";
@@ -326,6 +354,13 @@ namespace CapaDatos
             }
         }
 
+
+
+        /// <summary>
+        /// Este método obtiene los morosos de la base de datos, y los devuelve en forma de lista.
+        /// </summary>
+        /// <param name="errores"></param>
+        /// <returns></returns>
         public List<Lector> Morosos(out string errores)
         {
             errores = "";
@@ -363,6 +398,54 @@ namespace CapaDatos
             }
 
             return lista;
+        }
+
+
+        /// <summary>
+        /// Método que permite añadir un nuevo lector a la base de datos. Comprueba que los datos recibidos no estén vacíos.
+        /// El número de carnet se genera automáticamente al añadirlo a la base de datos.
+        /// </summary>
+        /// <param name="errores"></param>
+        /// <param name="nombre"></param>
+        /// <param name="contraseña"></param>
+        /// <param name="telefono"></param>
+        /// <param name="gmail"></param>
+        public void AñadirLector(out string errores, string nombre, string contraseña, string telefono, string gmail)
+        {
+            errores = "";
+            if (String.IsNullOrWhiteSpace(nombre) || String.IsNullOrWhiteSpace(contraseña) || String.IsNullOrWhiteSpace(telefono) || String.IsNullOrWhiteSpace(gmail))
+            {
+                errores = "No se pueden dejar campos vacíos";
+                return;
+            }
+
+            using (SqlConnection conexion = new SqlConnection(cadConexion))
+            {
+                try
+                {
+                    conexion.Open();
+
+                    string sqlAnyadirLibro = "INSERT INTO Lector (Nombre, Contrasena, Telefono, Email) " +
+                        "VALUES (@nombre, @contraseña, @telefono, @email)";
+                    SqlCommand cmdInsertarLibro = new SqlCommand(sqlAnyadirLibro, conexion);
+
+                    cmdInsertarLibro.Parameters.AddWithValue("@nombre", nombre);
+                    cmdInsertarLibro.Parameters.AddWithValue("@contraseña", contraseña);
+                    cmdInsertarLibro.Parameters.AddWithValue("@telefono", telefono);
+                    cmdInsertarLibro.Parameters.AddWithValue("@email", gmail);
+
+                    cmdInsertarLibro.ExecuteNonQuery();
+
+                }
+                catch (Exception e)
+                {
+                    errores = "Error al conectar con la base de datos" + e;
+                    return;
+                }
+                
+            }
+
+
         }
 
 
