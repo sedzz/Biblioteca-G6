@@ -2,7 +2,7 @@ USE MASTER
 
 IF EXISTS (SELECT name FROM sys.databases WHERE name = 'Biblioteca')
     BEGIN
-        DROP DATABASE Biblioteca
+        DROP DATABASE BibliotecaG6
     END
 
 CREATE DATABASE BIBLIOTECAG6
