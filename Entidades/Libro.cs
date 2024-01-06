@@ -29,6 +29,11 @@ namespace Entidades
         {
             Isbn = isbn;
         }
+        public Libro(string isbn, String titulo)
+        {
+            Isbn = isbn;
+            Titulo = titulo;
+        }
 
         public Libro(string isbn, string titulo, string editorial, string sinopsis, string caratula, int unidadesExistentes, string disponibilidad)
         {

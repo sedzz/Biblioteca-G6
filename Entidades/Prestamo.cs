@@ -29,5 +29,11 @@ namespace Entidades
             FechaPrestamo = fechaPrestamo;
             FechaDevolucion = fechaDevolucion;
         }
+        public Prestamo(DateTime fechaPrestamo, DateTime fechaDevolucion, string iSBN_Libro)
+        {
+            ISBN_Libro = iSBN_Libro;
+            FechaPrestamo = fechaPrestamo;
+            FechaDevolucion = fechaDevolucion;
+        }
     }
 }

@@ -424,7 +424,7 @@ namespace CapaDatos
             return lista;
         }
 
-        public void Devolucion(List<Prestamo> listaLibrosDevolucion, out string error)
+        public void Devolucion(List<Libro> librosDevolucion, out string error)
         {
             error = "";
 
@@ -433,39 +433,105 @@ namespace CapaDatos
                 try
                 {
                     conexion.Open();
+                    List<Prestamo> listaLibrosDevolucion = new List<Prestamo>();
+                    foreach (var libro in librosDevolucion)
+                    {
+                        string consultaPrestamoPorISbn = $"SELECT * FROM Toma_Prestado WHERE ISBN_libro = '{libro.Isbn}';";
+                        SqlCommand PrestamoPorISbn = new SqlCommand(consultaPrestamoPorISbn, conexion);
+                        SqlDataReader resultadoPrestamoPorISbn = PrestamoPorISbn.ExecuteReader();
+
+                        while (resultadoPrestamoPorISbn.Read())
+                        {
+                            DateTime fechaPrestamo = DateTime.Parse(resultadoPrestamoPorISbn["Fecha_Prestamo"].ToString());
+                            DateTime fechaDevolucion = DateTime.Parse(resultadoPrestamoPorISbn["Fecha_Devolucion"].ToString());
+
+                            listaLibrosDevolucion.Add(new Prestamo(fechaPrestamo, fechaDevolucion, resultadoPrestamoPorISbn["ISBN_Libro"].ToString()));
+                        }
+                    }
 
                     foreach (var libroParaDevolver in listaLibrosDevolucion)
                     {
-                        string consultaEliminarLibroPrestado = $"DELETE FROM Toma_Prestado WHERE Isbn_libro = @isbn AND Fecha_Prestamo = @Fecha_Prestamo AND Fecha_Devolucion = @Fecha_Devolucion"; ;
+                        string consultaEliminarLibroPrestado = $"DELETE FROM Toma_Prestado WHERE ISBN_libro = @isbn AND Fecha_Prestamo = @Fecha_Prestamo AND Fecha_Devolucion = @Fecha_Devolucion"; ;
                         SqlCommand EliminarLibroPrestado = new SqlCommand(consultaEliminarLibroPrestado, conexion);
 
                         EliminarLibroPrestado.Parameters.AddWithValue("@isbn", libroParaDevolver.ISBN_Libro);
                         EliminarLibroPrestado.Parameters.AddWithValue("@Fecha_Devolucion", libroParaDevolver.FechaDevolucion);
                         EliminarLibroPrestado.Parameters.AddWithValue("@Fecha_Prestamo", libroParaDevolver.FechaPrestamo);
-                        EliminarLibroPrestado.Parameters.AddWithValue("@NumCarnet", libroParaDevolver.NumCarnetLector);
-
-
 
                         int numDeFilasAceptadas = EliminarLibroPrestado.ExecuteNonQuery();
 
-                     
-
-
-
                     }
-
-                    
 
                 }
                 catch (Exception exc)
                 {
                     error = "Error al eliminar las devoluciones: " + exc;
                 }
+            }
+        }
+        public List<Prestamo> LibrosPrestados(String numCarnet)
+        {
+            String errores = "";
+            using (SqlConnection conexion = new SqlConnection(cadConexion))
+            {
 
+                try
+                {
+                    conexion.Open();
 
+                    string consultaLibrosDeUnLector = $"SELECT * FROM Toma_Prestado WHERE NumCarnet = '{numCarnet}';";
+                    SqlCommand librosDeUnLector = new SqlCommand(consultaLibrosDeUnLector, conexion);
 
+                    SqlDataReader resultadoLibroDeUnLector = librosDeUnLector.ExecuteReader();
+                    List<Prestamo> libros = new List<Prestamo>();
 
+                    while (resultadoLibroDeUnLector.Read())
+                    {
+                        DateTime fechaPrestamo = DateTime.Parse(resultadoLibroDeUnLector["Fecha_Prestamo"].ToString());
+                        DateTime fechaDevolucion = DateTime.Parse(resultadoLibroDeUnLector["Fecha_Devolucion"].ToString());
 
+                        libros.Add(new Prestamo(fechaPrestamo, fechaDevolucion, resultadoLibroDeUnLector["ISBN_Libro"].ToString()));
+                    }
+                    return libros;
+                }
+                catch (Exception)
+                {
+                    errores = "Error al agregar el libro";
+                    throw;
+
+                }
+            }
+        }
+
+        public Libro BuscarTituloLibroPorISBN(String isbn)
+        {
+            String errores = "";
+            using (SqlConnection conexion = new SqlConnection(cadConexion))
+            {
+
+                try
+                {
+                    conexion.Open();
+
+                    string consultaLibrosPorISBN = $"SELECT * FROM Libro WHERE ISBN = '{isbn}';";
+                    SqlCommand libroPorISBN = new SqlCommand(consultaLibrosPorISBN, conexion);
+
+                    SqlDataReader resultadolibroPorISBN = libroPorISBN.ExecuteReader();
+
+                    while (resultadolibroPorISBN.Read())
+                    {
+                        Libro libro = new Libro(resultadolibroPorISBN["ISBN"].ToString(), resultadolibroPorISBN["Titulo"].ToString());
+
+                        return libro;
+                    }
+                    return null;
+                }
+                catch (Exception)
+                {
+                    errores = "No se encontro ningun libro";
+                    throw;
+
+                }
             }
 
 
