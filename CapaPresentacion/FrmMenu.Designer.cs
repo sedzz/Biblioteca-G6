@@ -35,11 +35,11 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.bajaDeUsuariosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.préstamosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.devolucionesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.morososToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.salirToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.préstamosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -69,6 +69,7 @@
             this.archivoToolStripMenuItem.Name = "archivoToolStripMenuItem";
             this.archivoToolStripMenuItem.Size = new System.Drawing.Size(60, 24);
             this.archivoToolStripMenuItem.Text = "Menú";
+            // 
             // usuariosToolStripMenuItem
             // 
             this.usuariosToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -81,7 +82,7 @@
             // añadirLibroToolStripMenuItem
             // 
             this.añadirLibroToolStripMenuItem.Name = "añadirLibroToolStripMenuItem";
-            this.añadirLibroToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.añadirLibroToolStripMenuItem.Size = new System.Drawing.Size(170, 26);
             this.añadirLibroToolStripMenuItem.Text = "AñadirLibro";
             this.añadirLibroToolStripMenuItem.Click += new System.EventHandler(this.añadirLibroToolStripMenuItem_Click);
             // 
@@ -95,23 +96,33 @@
             this.bajaDeUsuariosToolStripMenuItem.Name = "bajaDeUsuariosToolStripMenuItem";
             this.bajaDeUsuariosToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.bajaDeUsuariosToolStripMenuItem.Text = "Lectores";
+            this.bajaDeUsuariosToolStripMenuItem.Click += new System.EventHandler(this.bajaDeUsuariosToolStripMenuItem_Click_1);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(221, 6);
             // 
+            // préstamosToolStripMenuItem
+            // 
+            this.préstamosToolStripMenuItem.Name = "préstamosToolStripMenuItem";
+            this.préstamosToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.préstamosToolStripMenuItem.Text = "Préstamos";
+            this.préstamosToolStripMenuItem.Click += new System.EventHandler(this.préstamosToolStripMenuItem_Click);
+            // 
             // devolucionesToolStripMenuItem
             // 
             this.devolucionesToolStripMenuItem.Name = "devolucionesToolStripMenuItem";
             this.devolucionesToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.devolucionesToolStripMenuItem.Text = "Devoluciones";
+            this.devolucionesToolStripMenuItem.Click += new System.EventHandler(this.devolucionesToolStripMenuItem_Click);
             // 
             // morososToolStripMenuItem
             // 
             this.morososToolStripMenuItem.Name = "morososToolStripMenuItem";
             this.morososToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.morososToolStripMenuItem.Text = "Morosos";
+            this.morososToolStripMenuItem.Click += new System.EventHandler(this.morososToolStripMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
@@ -123,12 +134,6 @@
             this.salirToolStripMenuItem.Name = "salirToolStripMenuItem";
             this.salirToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.salirToolStripMenuItem.Text = "Salir";
-            // 
-            // préstamosToolStripMenuItem
-            // 
-            this.préstamosToolStripMenuItem.Name = "préstamosToolStripMenuItem";
-            this.préstamosToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
-            this.préstamosToolStripMenuItem.Text = "Préstamos";
             // 
             // FrmMenu
             // 
