@@ -294,7 +294,7 @@ namespace CapaDatos
                                 }
                                 else
                                 {
-                                    errores = "No quedam mas unidades de este libro";
+                                    errores = "No quedan mas unidades de este libro";
                                 }
 
                                 
@@ -303,10 +303,12 @@ namespace CapaDatos
                     }
                 }
             }
-            catch (Exception ex)
+            catch (SqlException ex)
+            {
+                errores = $"Un mismo lector no puedo pedir prestado el mismo libro";
+            }catch (Exception ex)
             {
                 errores = ex.ToString();
-                throw;
             }
         }
 
