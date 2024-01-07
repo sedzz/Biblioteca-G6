@@ -45,7 +45,6 @@
             this.cbLibrosDevueltos.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
             this.cbLibrosDevueltos.Size = new System.Drawing.Size(209, 148);
             this.cbLibrosDevueltos.TabIndex = 12;
-            this.cbLibrosDevueltos.Click += new System.EventHandler(this.cbLibrosDevueltos_SelectedIndexChanged);
             // 
             // btnDevolver
             // 
@@ -83,7 +82,6 @@
             this.tbNumeroCarnet.Size = new System.Drawing.Size(100, 22);
             this.tbNumeroCarnet.TabIndex = 8;
             this.tbNumeroCarnet.Text = "N Carnet";
-            this.tbNumeroCarnet.Click += new System.EventHandler(this.tbNumeroCarnet_TextChanged);
             // 
             // label1
             // 

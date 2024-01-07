@@ -23,21 +23,11 @@ namespace CapaPresentacion
             InitializeComponent();
         }
 
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void tbNumeroCarnet_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void btnIntroducirNumero_Click(object sender, EventArgs e)
         {
             List<Prestamo> listaPrestados = new List<Prestamo>();
 
-            listaPrestados = gestorBiblioteca.LibrosPrestados(tbNumeroCarnet.Text);
+            listaPrestados = gestorBiblioteca.LibrosPrestados(tbNumeroCarnet.Text, out string error);
 
             if (listaPrestados != null)
             {
@@ -49,9 +39,10 @@ namespace CapaPresentacion
                     librosPrestamoUsuario.Add(lib);
                 }
             }
-
-
-
+            else {
+                MessageBox.Show(error);
+            }
+            
 
         }
 
@@ -83,10 +74,6 @@ namespace CapaPresentacion
             }
         }
 
-        private void cbLibrosDevueltos_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
 
     }
 }

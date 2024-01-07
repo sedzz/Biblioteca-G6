@@ -451,7 +451,7 @@ namespace CapaDatos
 
                     foreach (var libroParaDevolver in listaLibrosDevolucion)
                     {
-                        string consultaEliminarLibroPrestado = $"DELETE FROM Toma_Prestado WHERE ISBN_libro = @isbn AND Fecha_Prestamo = @Fecha_Prestamo AND Fecha_Devolucion = @Fecha_Devolucion"; ;
+                        string consultaEliminarLibroPrestado = $"DELETE FROM Toma_Prestado WHERE ISBN_libro = @isbn AND Fecha_Prestamo = @Fecha_Prestamo AND Fecha_Devolucion = @Fecha_Devolucion";
                         SqlCommand EliminarLibroPrestado = new SqlCommand(consultaEliminarLibroPrestado, conexion);
 
                         EliminarLibroPrestado.Parameters.AddWithValue("@isbn", libroParaDevolver.ISBN_Libro);
@@ -469,12 +469,12 @@ namespace CapaDatos
                 }
             }
         }
-        public List<Prestamo> LibrosPrestados(String numCarnet)
+        public List<Prestamo> LibrosPrestados(String numCarnet, out String error)
         {
-            String errores = "";
+             error = "";
             using (SqlConnection conexion = new SqlConnection(cadConexion))
             {
-
+                    List<Prestamo> libros = new List<Prestamo>();
                 try
                 {
                     conexion.Open();
@@ -483,7 +483,7 @@ namespace CapaDatos
                     SqlCommand librosDeUnLector = new SqlCommand(consultaLibrosDeUnLector, conexion);
 
                     SqlDataReader resultadoLibroDeUnLector = librosDeUnLector.ExecuteReader();
-                    List<Prestamo> libros = new List<Prestamo>();
+                    
 
                     while (resultadoLibroDeUnLector.Read())
                     {
@@ -492,14 +492,14 @@ namespace CapaDatos
 
                         libros.Add(new Prestamo(fechaPrestamo, fechaDevolucion, resultadoLibroDeUnLector["ISBN_Libro"].ToString()));
                     }
-                    return libros;
+                   
                 }
-                catch (Exception)
+                catch (Exception exc)
                 {
-                    errores = "Error al agregar el libro";
-                    throw;
-
-                }
+                    error = "Error al buscar libros prestados: "+exc.Message;
+                  
+                } 
+                return libros;
             }
         }
 
@@ -526,9 +526,9 @@ namespace CapaDatos
                     }
                     return null;
                 }
-                catch (Exception)
+                catch (Exception exc)
                 {
-                    errores = "No se encontro ningun libro";
+                    errores = "No se encontro ningun libro: "+exc.Message;
                     throw;
 
                 }
