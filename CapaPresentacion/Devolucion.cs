@@ -65,7 +65,11 @@ namespace CapaPresentacion
 
                 }
 
-                gestorBiblioteca.Devolucion(listaLibrosDevolucion, out error);
+                if (gestorBiblioteca.Devolucion(listaLibrosDevolucion, out error))
+                {
+                    MessageBox.Show("Se devolvio el libro correctamente");
+                }
+               btnIntroducirNumero_Click(sender, e);
             }
             else
             {

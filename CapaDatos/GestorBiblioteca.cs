@@ -21,7 +21,7 @@ namespace CapaDatos
     /// </summary>
     public class GestorBiblioteca
     {
-        const string cadConexion = "Data Source=DESKTOP-T5I655L\\SEBASERVER; Initial Catalog=BibliotecaG6; Integrated Security=SSPI; MultipleActiveResultSets=true";
+        const string cadConexion = "Data Source=DESKTOP-EGM64RC\\MSQLSERVER; Initial Catalog=BibliotecaG6; Integrated Security=SSPI; MultipleActiveResultSets=true";
         DatosBiblioteca biblioteca = new DatosBiblioteca("4V", "San Jorge", "./logo.png");
 
 
@@ -426,7 +426,7 @@ namespace CapaDatos
             return lista;
         }
 
-        public void Devolucion(List<Libro> librosDevolucion, out string error)
+        public Boolean Devolucion(List<Libro> librosDevolucion, out string error)
         {
             error = "";
 
@@ -462,12 +462,17 @@ namespace CapaDatos
 
                         int numDeFilasAceptadas = EliminarLibroPrestado.ExecuteNonQuery();
 
+                        string sqlActualizarUnidadesLibro = "UPDATE Libro SET Unidades = Unidades + 1 WHERE ISBN = @isbn";
+                        SqlCommand actualizarUnidadesLibro = new SqlCommand(sqlActualizarUnidadesLibro, conexion);
+                        actualizarUnidadesLibro.Parameters.AddWithValue("@isbn", libroParaDevolver.ISBN_Libro);
+                        actualizarUnidadesLibro.ExecuteNonQuery();
                     }
-
+                    return true;
                 }
                 catch (Exception exc)
                 {
                     error = "Error al eliminar las devoluciones: " + exc;
+                    return false;
                 }
             }
         }
