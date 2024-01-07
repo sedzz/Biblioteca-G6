@@ -65,5 +65,12 @@ namespace CapaPresentacion
             frmLectores.ShowDialog();
             Hide();
         }
+
+        private void autoresToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FrmAutores frmAutores = new FrmAutores();
+            frmAutores.ShowDialog();
+            Hide();
+        }
     }
 }

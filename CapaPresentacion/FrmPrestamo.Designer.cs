@@ -38,11 +38,12 @@
             this.label4 = new System.Windows.Forms.Label();
             this.dateFinal = new System.Windows.Forms.DateTimePicker();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.lblCantidadLibros = new System.Windows.Forms.Label();
             this.lblNombreLibro = new System.Windows.Forms.Label();
             this.lblResultado = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.lblCantidadLibros = new System.Windows.Forms.Label();
+            this.btnVolver = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -132,6 +133,14 @@
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             // 
+            // lblCantidadLibros
+            // 
+            this.lblCantidadLibros.AutoSize = true;
+            this.lblCantidadLibros.Location = new System.Drawing.Point(43, 122);
+            this.lblCantidadLibros.Name = "lblCantidadLibros";
+            this.lblCantidadLibros.Size = new System.Drawing.Size(0, 13);
+            this.lblCantidadLibros.TabIndex = 12;
+            // 
             // lblNombreLibro
             // 
             this.lblNombreLibro.Location = new System.Drawing.Point(40, 85);
@@ -165,19 +174,22 @@
             this.label6.TabIndex = 10;
             this.label6.Text = "REALIZAR PRESTAMO";
             // 
-            // lblCantidadLibros
+            // btnVolver
             // 
-            this.lblCantidadLibros.AutoSize = true;
-            this.lblCantidadLibros.Location = new System.Drawing.Point(43, 122);
-            this.lblCantidadLibros.Name = "lblCantidadLibros";
-            this.lblCantidadLibros.Size = new System.Drawing.Size(0, 13);
-            this.lblCantidadLibros.TabIndex = 12;
+            this.btnVolver.Location = new System.Drawing.Point(339, 375);
+            this.btnVolver.Name = "btnVolver";
+            this.btnVolver.Size = new System.Drawing.Size(106, 42);
+            this.btnVolver.TabIndex = 11;
+            this.btnVolver.Text = "Volver";
+            this.btnVolver.UseVisualStyleBackColor = true;
+            this.btnVolver.Click += new System.EventHandler(this.btnVolver_Click);
             // 
             // FrmPrestamo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnVolver);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.dateFinal);
@@ -214,5 +226,6 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label lblNombreLibro;
         private System.Windows.Forms.Label lblCantidadLibros;
+        private System.Windows.Forms.Button btnVolver;
     }
 }
