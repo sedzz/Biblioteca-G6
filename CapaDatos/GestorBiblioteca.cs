@@ -21,7 +21,7 @@ namespace CapaDatos
     /// </summary>
     public class GestorBiblioteca
     {
-        const string cadConexion = "Data Source= DESKTOP-EGM64RC\\MSQLSERVER; Initial Catalog=BibliotecaG6; Integrated Security=SSPI; MultipleActiveResultSets=true";
+        const string cadConexion = "Data Source=DESKTOP-T5I655L\\SEBASERVER; Initial Catalog=BibliotecaG6; Integrated Security=SSPI; MultipleActiveResultSets=true";
         DatosBiblioteca biblioteca = new DatosBiblioteca("4V", "San Jorge", "./logo.png");
 
 
@@ -294,7 +294,7 @@ namespace CapaDatos
                                 }
                                 else
                                 {
-                                    errores = "No quedam mas unidades de este libro";
+                                    errores = "No quedan mas unidades de este libro";
                                 }
 
                                 
@@ -303,10 +303,12 @@ namespace CapaDatos
                     }
                 }
             }
-            catch (Exception ex)
+            catch (SqlException ex)
+            {
+                errores = $"Un mismo lector no puedo pedir prestado el mismo libro";
+            }catch (Exception ex)
             {
                 errores = ex.ToString();
-                throw;
             }
         }
 

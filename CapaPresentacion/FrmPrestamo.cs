@@ -59,7 +59,10 @@ namespace CapaPresentacion
                 MessageBox.Show("ISBN del libro invalido"); return;
             }
 
-            gestorBiblioteca.Prestamo(DateTime.Now, fechaEntrega, isbn, lector, out errores);
+           
+
+
+            gestorBiblioteca.Prestamo(DateTime.Now.Date, fechaEntrega, isbn, lector, out errores);
 
             if (!string.IsNullOrWhiteSpace(errores))
             {
@@ -70,6 +73,13 @@ namespace CapaPresentacion
             lblResultado.Text = "Libro Prestado Correctamente";
             lblCantidadLibros.Text = "Libros Restantes : "+libro.UnidadesExistentes.ToString();
 
+        }
+
+        private void btnVolver_Click(object sender, EventArgs e)
+        {
+            FrmMenu frmMenu = new FrmMenu();
+            frmMenu.Show();
+            this.Hide();
         }
     }
 }
