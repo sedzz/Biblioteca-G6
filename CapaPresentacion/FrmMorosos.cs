@@ -23,10 +23,12 @@ namespace CapaPresentacion
         private void FrmMorosos_Load(object sender, EventArgs e)
         {
             List<Lector> morosos = Program.gestion.Morosos(out string errores);
-            MessageBox.Show(errores);
             if (morosos.Count == 0)
             {
-                MessageBox.Show("NO HAY MOROSOS");
+                MessageBox.Show(errores, "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                FrmMenu frmMenu = new FrmMenu();
+                frmMenu.Show();
+                this.Close();
             }
             else
             {
