@@ -14,7 +14,7 @@ namespace CapaPresentacion
 {
     public partial class frmLibros : Form
     {
-        GestorBiblioteca gestion = new GestorBiblioteca();
+        GestorBiblioteca gestion = new GestorBiblioteca(); // todo NO puede ser aquí
         public frmLibros()
         {
             InitializeComponent();

@@ -55,7 +55,7 @@ namespace CapaPresentacion
 
                 foreach (var tituloLibroPrestadoDevuelto in cbLibrosDevueltos.SelectedItems)
                 {
-                    foreach (var libroPrestado in librosPrestamoUsuario)
+                    foreach (var libroPrestado in librosPrestamoUsuario) // todo NO debe buscar en todos 
                     {
                         if (tituloLibroPrestadoDevuelto.ToString() == libroPrestado.Titulo)
                         {

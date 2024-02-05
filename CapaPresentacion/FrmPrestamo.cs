@@ -21,6 +21,7 @@ namespace CapaPresentacion
 
         private void btnHacerPrestamo_Click(object sender, EventArgs e)
         {
+            // todo Las fechas no están bien planteadas. Eran valores por defecto pero que se podían cambiar
             string lector = txtNumCarnet.Text;
             string isbn = txtISBN.Text;
             DateTime fechaEntrega = DateTime.Parse(dateFinal.Text);
@@ -46,8 +47,9 @@ namespace CapaPresentacion
             {
                 MessageBox.Show(erroresBuscarLectorPorId); 
             }
-            Libro libro = Consultas.BuscarLibroPorISBN(isbn);
-            GestorBiblioteca gestorBiblioteca = Program.gestion;
+            // todo Aunque haya errores continúa (luego si lo controla)
+            Libro libro = Consultas.BuscarLibroPorISBN(isbn); // todo Aunque no encuentre continúa
+            GestorBiblioteca gestorBiblioteca = Program.gestion; // todo ¿?¿?
           
             if(prestatario == null )
             {
@@ -71,7 +73,7 @@ namespace CapaPresentacion
 
             lblNombreLibro.Text = libro.Titulo;
             lblResultado.Text = "Libro Prestado Correctamente";
-            lblCantidadLibros.Text = "Libros Restantes : "+libro.UnidadesExistentes.ToString();
+            lblCantidadLibros.Text = "Libros Restantes : "+libro.UnidadesExistentes.ToString(); // todo Esto no es cierto
 
         }
 

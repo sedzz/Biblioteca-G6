@@ -21,7 +21,9 @@ namespace CapaDatos
     /// </summary>
     public class GestorBiblioteca
     {
-        const string cadConexion = "Data Source=DESKTOP-T5I655L\\SEBASERVER; Initial Catalog=BibliotecaG6; Integrated Security=SSPI; MultipleActiveResultSets=true";
+      // TODO  const string cadConexion = "Data Source=DESKTOP-T5I655L\\SEBASERVER; Initial Catalog=BibliotecaG6; Integrated Security=SSPI; MultipleActiveResultSets=true";
+
+        const string cadConexion = "Data Source =.; Initial Catalog = BibliotecaG6; Integrated Security = SSPI; MultipleActiveResultSets=true";
         DatosBiblioteca biblioteca = new DatosBiblioteca("4V", "San Jorge", "./logo.png");
 
 
@@ -42,7 +44,7 @@ namespace CapaDatos
         public void AñadirLibro(string isbn, string titulo, string editorial, string sinopsis, string caratula, int unidadesExistentes, string disponibilidad, List<Autor> autores, List<Categoria> categorias, out string errores)
         {
             errores = "";
-
+          
 
             //Comprobamos que el libro tenga autores y categorías asociados.
             if (autores.Count == 0 || categorias.Count == 0)
@@ -67,11 +69,12 @@ namespace CapaDatos
             {
                 try
                 {
+                    
                     conexion.Open();
                
                     //Comprueba que los autores y categorías existan en la base de datos, utilizando 2 métodos auxiliares.
                     bool autoresCategoriasExistentes = true;
-                    foreach (var categoria in categorias)
+                    foreach (var categoria in categorias) // todo No hace nada con estos foreach (tengan errores, devuelvan true o false,...) ¡¡¡la bool tiene el valor del último autor!!!!
                     {
                         autoresCategoriasExistentes = comprobarExistenciaCategoria(categoria.Id, out errores);
                     }
@@ -230,6 +233,7 @@ namespace CapaDatos
             errores = "";
             try
             {
+                // todo Varias lecturas al mismo libro? Solo 1 y obtener todos los datos del libro
                 using (SqlConnection conexion = new SqlConnection(cadConexion))
                 {
                     conexion.Open();
@@ -256,7 +260,7 @@ namespace CapaDatos
                         }
                         else
                         {
-
+                            
                             string sqlVerificarMorosidad = "SELECT COUNT(*) FROM Toma_Prestado " +
                                 "WHERE NumCarnet = @numCarnet AND Fecha_Devolucion < @fechaActual";
                             SqlCommand verificarMorosidadCmd = new SqlCommand(sqlVerificarMorosidad, conexion);
@@ -270,6 +274,7 @@ namespace CapaDatos
                             }
                             else
                             {
+                                // TODO Debe controlar que no existe ese préstamo (pero bien hecho) y si no queréis dejar que un lector se lleve 2 unidades diferentes, no sería como lo hacéis
 
                                 string sqlAnyadirDevoluciones = "INSERT INTO Toma_Prestado (Fecha_Prestamo, Fecha_Devolucion, ISBN_Libro, NumCarnet) " +
                                     "VALUES (@fechaPrestamo, @fechaDevolucion, @isbn, @numCarnet)";
@@ -285,7 +290,7 @@ namespace CapaDatos
                                 verificarUnidadesCmd.Parameters.AddWithValue("@isbn", isbn);
                                 int unidades = (int)verificarUnidadesCmd.ExecuteScalar();
 
-                                if ((unidades -1) >= 0)
+                                if ((unidades -1) >= 0) // todo Las unidades nunca debían cambiar, debía controlar que unidades > cantidad de veces prestado
                                 {
                                     string sqlActualizarUnidadesLibro = "UPDATE Libro SET Unidades = Unidades - 1 WHERE ISBN = @isbn";
                                     SqlCommand actualizarUnidadesLibro = new SqlCommand(sqlActualizarUnidadesLibro, conexion);
@@ -305,7 +310,7 @@ namespace CapaDatos
             }
             catch (SqlException ex)
             {
-                errores = $"Un mismo lector no puedo pedir prestado el mismo libro";
+                errores = $"Un mismo lector no puedo pedir prestado el mismo libro"; // todo Podría ser por otro error diferente e incluso si el lector intenta coger el mismo libro otro día le dejaría
             }catch (Exception ex)
             {
                 errores = ex.ToString();
@@ -429,7 +434,7 @@ namespace CapaDatos
         public Boolean Devolucion(List<Libro> librosDevolucion, out string error)
         {
             error = "";
-
+            // todo No controla que sea del lector en concreto, aumenta las unidades del libro y no saca nada en fichero de datos
             using (SqlConnection conexion = new SqlConnection(cadConexion))
             {
                 try
@@ -476,7 +481,7 @@ namespace CapaDatos
                 }
             }
         }
-        public List<Prestamo> LibrosPrestados(String numCarnet, out String error)
+        public List<Prestamo> LibrosPrestados(String numCarnet, out String error) // todo Nombre nada significativo
         {
              error = "";
             using (SqlConnection conexion = new SqlConnection(cadConexion))
@@ -486,7 +491,7 @@ namespace CapaDatos
                 {
                     conexion.Open();
 
-                    string consultaLibrosDeUnLector = $"SELECT * FROM Toma_Prestado WHERE NumCarnet = '{numCarnet}';";
+                    string consultaLibrosDeUnLector = $"SELECT * FROM Toma_Prestado WHERE NumCarnet = '{numCarnet}';"; // todo Se debe hacer con parámetro
                     SqlCommand librosDeUnLector = new SqlCommand(consultaLibrosDeUnLector, conexion);
 
                     SqlDataReader resultadoLibroDeUnLector = librosDeUnLector.ExecuteReader();
@@ -556,6 +561,7 @@ namespace CapaDatos
         /// <param name="gmail"></param>
         public void AñadirLector(out string errores, string nombre, string contraseña, string telefono, string gmail)
         {
+            // todo: Error de ejecución
             errores = "";
             if (String.IsNullOrWhiteSpace(nombre) || String.IsNullOrWhiteSpace(contraseña) || String.IsNullOrWhiteSpace(telefono) || String.IsNullOrWhiteSpace(gmail))
             {
@@ -594,6 +600,7 @@ namespace CapaDatos
 
         public void AñadirAutor(string nombre, out string errores)
         {
+            // todo Puede haber varios con el mismo nombre!!!!
             errores = "";
             if (String.IsNullOrWhiteSpace(nombre))
             {

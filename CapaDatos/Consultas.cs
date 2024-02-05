@@ -11,16 +11,16 @@ namespace CapaDatos
      /// </summary>
      public static class Consultas
     {
-        const string cadConexion = "Data Source =DESKTOP-T5I655L\\SEBASERVER; Initial Catalog = BibliotecaG6; Integrated Security = SSPI; MultipleActiveResultSets=true";
-
-
-         /// <summary>
-         /// Este método permite obtener todos los libros de la base de datos cuyo nombre contenga la porción de título proporcionada. Devuelve una lista de libros.
-         /// </summary>
-         /// <param name="porcionTitulo"></param>
-         /// <param name="errores"></param>
-         /// <returns></returns>
-         public static List<Libro> BuscarLibroPorPorcionTitulo(string porcionTitulo, out string errores)
+        //const string cadConexion = "Data Source =DESKTOP-T5I655L\\SEBASERVER; Initial Catalog = BibliotecaG6; Integrated Security = SSPI; MultipleActiveResultSets=true";
+        // TODO Data Source DESKTOP-T5I655L\\SEBASERVER
+        const string cadConexion = "Data Source =.; Initial Catalog = BibliotecaG6; Integrated Security = SSPI; MultipleActiveResultSets=true";
+        /// <summary>
+        /// Este método permite obtener todos los libros de la base de datos cuyo nombre contenga la porción de título proporcionada. Devuelve una lista de libros.
+        /// </summary>
+        /// <param name="porcionTitulo"></param>
+        /// <param name="errores"></param>
+        /// <returns></returns>
+        public static List<Libro> BuscarLibroPorPorcionTitulo(string porcionTitulo, out string errores)
         {
             errores = "";
             List<Libro> resultado = new List<Libro>();
@@ -307,7 +307,7 @@ namespace CapaDatos
                 catch (Exception e)
                 {
                     errores ="Ocurrió un error al buscar el lector en la base de datos"+e;
-                    throw;
+                    throw; // todo Error grave dejar este throw
                 }
             }
         }
